@@ -2,6 +2,9 @@ import { createServer } from "node:http";
 import { URL } from "node:url";
 import { handlePath } from "./src/path_handlers.js";
 
+const port = 8000;
+const host = "localhost"; 
+
 // Create a HTTP server
 const server = createServer((req, res) => {
   const request_url = new URL(`http://${host}${req.url}`);
@@ -14,9 +17,6 @@ const server = createServer((req, res) => {
     res.end("Site not found!\n");
   }
 });
-
-const port = 8000;
-const host = "localhost";
 
 // Start the server
 server.listen(port, host, () => {
