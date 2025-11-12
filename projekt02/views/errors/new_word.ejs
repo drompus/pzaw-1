@@ -1,0 +1,11 @@
+<%- include("../partials/head.ejs") %>
+
+<main>
+    <h1 class="add-word-error-header">Wprowadzone słowo [<span class="add-word-error-value"><%= word_name %></span>] jest niepoprawne!!!</h1>
+    <h2>Powody: </h2>
+    <% errors.forEach(function(error) { %>
+        <p><i><b>- <%= error %></b></i></p>
+    <% }); %>
+</main>
+
+<%- include("../partials/foot.ejs") %>

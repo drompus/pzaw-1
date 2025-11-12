@@ -1,0 +1,100 @@
+html {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    background-color: rgb(80, 80, 80);
+}
+
+body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 0;
+    padding: 50px 0;
+}
+
+nav {
+    width: 60%;
+    margin-bottom: 10px;
+}
+
+nav ul {
+    display: flex;
+    column-gap: 30px;
+    justify-content: center;
+    padding: 10px;
+    background-color: rgb(60, 120, 60);
+    border-radius: 10px;
+}
+
+nav ul a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+nav ul a:hover {
+    text-decoration: underline;
+}
+
+
+main {
+    border-radius: 20px;
+    width: 60%;
+    background: linear-gradient(135deg, rgb(98, 175, 121), rgb(107, 219, 135));
+    padding: 15px;
+    box-shadow: 0 0 20px #fffc3d;
+    color: rgb(20, 40, 20);
+}
+
+main h1 {
+    font-weight: normal;
+}
+
+.word-list-category {
+    margin-left: 20px; 
+    color: #f4ff57;
+}
+
+.word-list-category h2 {
+    font-weight: 650;
+}
+
+.word-list-category ul {
+    list-style-type: square;
+    font-weight: 500;
+    color: rgb(30, 2, 95);
+}
+
+.add-word-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+}
+
+.add-word-form select, .add-word-form input {
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.add-word-form button {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 24px;
+    background-color: rgb(80, 150, 80);
+    color: white;
+    border: 1px solid yellow;
+    cursor: pointer;
+}
+
+.add-word-error-header {
+    color: rgb(214, 0, 0);
+    font-weight: bolder;
+    font-style: italic;
+}
+
+.add-word-error-value {
+    color: black;
+}
