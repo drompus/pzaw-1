@@ -4,7 +4,7 @@
 
     <h1><b><i>Dodaj nowe słowo do wybranej kategori:</i></b></h1>
     <% if (categories.length > 0){ %>
-        <%- include("parameter_partials/forms/new_word.ejs", { categories: categories }) %>
+        <%- include("partials/forms/new_word.ejs", { categories: categories }) %>
     <% } else { %>
         <span>Nie istnieją jeszcze żadne kategorie!</span> 
     <% } %>

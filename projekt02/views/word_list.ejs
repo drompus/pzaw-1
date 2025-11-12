@@ -3,7 +3,7 @@
 <main>
     <h1><b><i>Poniżej znajduje się lista wszystkich słów wg kategorii</i></b></h1>
     <% if (categories.length > 0){ %>
-        <%- include("parameter_partials/words_categories.ejs", { categories: categories })  %>
+        <%- include("partials/words_categories.ejs", { categories: categories })  %>
     <% } else { %>
         <span>Nie istnieją jeszcze żadne kategorie!</span> 
     <% } %>

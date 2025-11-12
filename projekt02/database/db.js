@@ -1,7 +1,7 @@
 import { DatabaseSync } from "node:sqlite";
+import { DB_PATH } from "../config.js";
 
-const db_path = "./db.sqlite";
-export const db = new DatabaseSync(db_path);
+export const db = new DatabaseSync(DB_PATH);
 
 export function createDBTables() {
     db.exec(`

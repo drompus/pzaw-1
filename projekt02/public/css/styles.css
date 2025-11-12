@@ -51,6 +51,16 @@ main h1 {
     font-weight: normal;
 }
 
+.welcome-text {
+    font-weight: bold;
+}
+
+.welcome-tip {
+    font-style: italic;
+    font-size: 1.2em;
+    text-align: center;
+}
+
 .word-list-category {
     margin-left: 20px; 
     color: #f4ff57;
@@ -95,6 +105,103 @@ main h1 {
     font-style: italic;
 }
 
+.error-text {
+    color: rgb(214, 0, 0);
+}
+
 .add-word-error-value {
     color: black;
+}
+
+.start-game-form {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.game-button {
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+.game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.game-controls {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.game-overview {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.game-word-info {
+    font-size: 3em;
+    font-weight: bold;
+}
+
+.game-secondary-info {
+    font-size: 1.5em;
+}
+
+.game-summary {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 40px 30px;
+    max-width: 500px;
+    margin: 100px;
+    text-align: center;
+}
+
+.game-summary h1, 
+.game-summary h2 {
+    color: #333;
+    font-size: 2em;
+    margin-bottom: 15px;
+}
+
+.game-summary p {
+    color: #555;
+    font-size: 1.2em;
+    margin-bottom: 25px;
+}
+
+.game-summary button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 25px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.25s ease;
+}
+
+.game-summary button:hover {
+    background: #0056b3;
+}
+
+.game-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.game-button:hover {
+    background-color: #45a049;
 }

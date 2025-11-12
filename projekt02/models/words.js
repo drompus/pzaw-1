@@ -4,6 +4,7 @@ const db_operations = {
     get_categories: () => db.prepare(`SELECT id, dev_name, name FROM categories`),
     get_category_by_id: () => db.prepare(`SELECT id, dev_name, name FROM categories WHERE id = ?`),
     get_words_by_category_id: () => db.prepare(`SELECT name FROM words WHERE category_id = ?`),
+    get_all_words_count: () => db.prepare(`SELECT COUNT(*) as total FROM words`),
     add_word_by_category_id: () => db.prepare(`INSERT INTO words (category_id, name) VALUES (?, ?)`)
 };
 
@@ -22,6 +23,10 @@ export function addWordToCategory(category_id, word_name) {
 
 export function hasCategoryId(category_id) {
     return db_operations.get_category_by_id().all(category_id).length > 0;
+}
+
+export function getWordsCount() {
+    return db_operations.get_all_words_count().get().total
 }
 
 export function validateWordName(word_name) {
@@ -58,11 +63,28 @@ export function validateWordName(word_name) {
     return errors;
 }
 
+export function getRandomWord(excluded_words = []) {
+    let query = `
+        SELECT words.name AS name, categories.name AS category
+        FROM words
+        JOIN categories ON words.category_id = categories.id`;
+
+    if (excluded_words.length > 0) {
+        const chars_for_values = excluded_words.map(() => '?').join(',');
+        query += ` WHERE words.name NOT IN (${chars_for_values})`;
+    }
+
+    query += ` ORDER BY RANDOM() LIMIT 1`;
+
+    return db.prepare(query).get(...excluded_words);
+}
 
 export default {
     getAllCategories,
     getWordsByCategoryId,
     addWordToCategory,
     hasCategoryId,
+    getWordsCount,
+    getRandomWord,
     validateWordName
 }
