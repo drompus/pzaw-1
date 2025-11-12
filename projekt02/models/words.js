@@ -1,27 +1,27 @@
 import { db } from "../database/db.js";
 
 const db_operations = {
-    get_categories: db.prepare(`SELECT id, dev_name, name FROM categories`),
-    get_category_by_id: db.prepare(`SELECT id, dev_name, name FROM categories WHERE id = ?`),
-    get_words_by_category_id: db.prepare(`SELECT name FROM words WHERE category_id = ?`),
-    add_word_by_category_id: db.prepare(`INSERT INTO words (category_id, name) VALUES (?, ?)`)
+    get_categories: () => db.prepare(`SELECT id, dev_name, name FROM categories`),
+    get_category_by_id: () => db.prepare(`SELECT id, dev_name, name FROM categories WHERE id = ?`),
+    get_words_by_category_id: () => db.prepare(`SELECT name FROM words WHERE category_id = ?`),
+    add_word_by_category_id: () => db.prepare(`INSERT INTO words (category_id, name) VALUES (?, ?)`)
 };
 
 export function getAllCategories() {
-    return db_operations.get_categories.all();
+    return db_operations.get_categories().all();
 }
 
 export function getWordsByCategoryId(category_id) {
-    return db_operations.get_words_by_category_id.all(category_id);
+    return db_operations.get_words_by_category_id().all(category_id);
 }
 
 export function addWordToCategory(category_id, word_name) {
     const formatted_word = word_name.trim().toLowerCase();
-    return db_operations.add_word_by_category_id.run(category_id, formatted_word);
+    return db_operations.add_word_by_category_id().run(category_id, formatted_word);
 }
 
 export function hasCategoryId(category_id) {
-    return db_operations.get_category_by_id.all(category_id).length > 0;
+    return db_operations.get_category_by_id().all(category_id).length > 0;
 }
 
 export function validateWordName(word_name) {

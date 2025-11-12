@@ -10,6 +10,12 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded());
 
+// TODO - add a way to store session data (current game state for each user)
+
+app.get("/", (req, res) => {
+    res.render("index", { title: "Zgadywanka - Strona główna"});
+});
+
 app.get("/word_list", (req, res) => {
     const categories = words.getAllCategories();
     categories.forEach(category => {

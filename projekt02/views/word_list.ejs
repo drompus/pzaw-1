@@ -2,17 +2,11 @@
 
 <main>
     <h1><b><i>Poniżej znajduje się lista wszystkich słów wg kategorii</i></b></h1>
-
-    <% categories.forEach(category => { %>
-        <section class="word-list-category">
-            <h2><%= category.name %></h2>
-            <ul>
-                <% category.words.forEach(word => { %>
-                    <li><%= word.name %></li>
-                <% }); %>
-            </ul>
-        </section>
-    <% }); %>
+    <% if (categories.length > 0){ %>
+        <%- include("parameter_partials/words_categories.ejs", { categories: categories })  %>
+    <% } else { %>
+        <span>Nie istnieją jeszcze żadne kategorie!</span> 
+    <% } %>
 
 </main>
 
