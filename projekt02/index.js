@@ -3,8 +3,8 @@ import session from "express-session";
 
 import { SECRET } from "./config.js";
 import { createDBTables } from "./database/db.js";
-import * as add_word_handlers from "./post_handlers/add_word.js";
-import * as game_handlers from "./post_handlers/game.js";
+import * as add_word_handlers from "./handlers/add_word.js";
+import * as game_handlers from "./handlers/game.js";
 import words from "./models/words.js";
 import createGameSession from "./middlewares/game_session.js";
 
