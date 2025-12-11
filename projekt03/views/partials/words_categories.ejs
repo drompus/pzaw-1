@@ -1,14 +1,15 @@
-<% categories.forEach(category=> { %>
+<% categories.forEach(category => { %>
     <section class="word-list-category">
-        <h2>
-            <%= category.name %>
-        </h2>
+        <h2><%= category.name %></h2>
         <ul>
-            <% category.words.forEach(word=> { %>
+            <% category.words.forEach(word => { %>
                 <li>
                     <%= word.name %>
+                    
+                    <%- include("./forms/edit_word.ejs", { word }) %>
+                    <%- include("./forms/delete_word.ejs", { word }) %>
                 </li>
-                <% }); %>
+            <% }) %>
         </ul>
     </section>
-<% }); %>
+<% }) %>

@@ -113,6 +113,38 @@ main h1 {
     color: black;
 }
 
+.edit-word-main {
+    text-align: center;
+    font-size: 20px;
+}
+
+.edit-word-form {
+    margin-top: 20px;
+}
+
+.edit-word-form input[type="text"] {
+    font-size: 18px;
+    width: 250px;
+    padding: 6px;
+    margin: 10px 0;
+}
+
+.edit-word-form button {
+    font-size: 18px;
+    padding: 8px 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.edit-word-form button:hover {
+    background-color: #45a049;
+}
+
+
 .start-game-form {
     display: flex;
     gap: 20px;
