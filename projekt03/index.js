@@ -3,7 +3,7 @@ import session from "express-session";
 
 import { SECRET } from "./config.js";
 import { createDBTables } from "./database/db.js";
-import * as add_word_handlers from "./handlers/add_word.js";
+import word_router from "./routers/word.js";
 import game_router from "./routers/game.js";
 import { word_manager } from "./models/words.js";
 import createGameSession from "./middlewares/game_session.js";
@@ -34,24 +34,12 @@ app.use((req, res, next) => { // used to prevent error when post without paramet
 
 // Middlewares - routers
 app.use("/game", game_router);
+app.use("/word", word_router);
 
 
 // Endpoints
 app.get("/", (req, res) => {
     res.render("index", { title: "Zgadywanka - Strona główna", words_count: word_manager.getWordsCount() });
-});
-
-app.post("/add_word", add_word_handlers.addWordHandler); // req and res are automatically passed
-
-app.get("/add_word", (req, res) => {
-    const is_game_active = req.session?.game_state?.is_active || false;
-
-    if (is_game_active) {
-        return res.render("add_word", { title: "Zgadywanka - Dodaj słowo", is_game_active: true })
-    }
-    
-    return res.render("add_word", { title: "Zgadywanka - Dodaj słowo", categories: word_manager.getAllCategories(), is_game_active: false });
-
 });
 
 app.get("/word_list", (req, res) => {

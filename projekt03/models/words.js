@@ -5,19 +5,32 @@ class WordsModel {
     // CRUD fields
     #get_categories;
     #get_category_by_id;
+    #get_word_by_id;
     #get_words_by_category_id;
     #get_all_words_count;
     #add_word_by_category_id;
+    #update_word_by_id;
 
     init() {
         this.#get_categories = db.prepare(`SELECT id, dev_name, name FROM categories`);
         this.#get_category_by_id = db.prepare(`SELECT id, dev_name, name FROM categories WHERE id = ?`);
-        this.#get_words_by_category_id = db.prepare(`SELECT name FROM words WHERE category_id = ?`);
+        this.#get_word_by_id = db.prepare(`
+            SELECT words.id AS id, words.name AS name, words.category_id AS category_id, categories.name AS category_name
+            FROM words
+            JOIN categories ON words.category_id = categories.id
+            WHERE words.id = ?
+        `);
+        this.#get_words_by_category_id = db.prepare(`SELECT name, id FROM words WHERE category_id = ?`);
         this.#get_all_words_count = db.prepare(`SELECT COUNT(*) as total FROM words`);
         this.#add_word_by_category_id = db.prepare(`INSERT INTO words (category_id, name) VALUES (?, ?)`);
+        this.#update_word_by_id = db.prepare(`UPDATE words SET name = ? WHERE id = ?`);
     }
 
     // Database CRUD
+
+    getWordById(word_id) {
+        return this.#get_word_by_id.get(word_id);
+    }
 
     getAllCategories() {
         return this.#get_categories.all();
@@ -32,12 +45,21 @@ class WordsModel {
         return this.#add_word_by_category_id.run(category_id, formatted_word);
     }
 
+    hasWordId(word_id) {
+        return this.#get_word_by_id.all(word_id).length > 0;
+    }
+
     hasCategoryId(category_id) {
         return this.#get_category_by_id.all(category_id).length > 0;
     }
 
     getWordsCount() {
         return this.#get_all_words_count.get().total;
+    }
+
+    updateWordName(word_id, new_word_name) {
+        const formatted_word = new_word_name.trim().toLowerCase();        
+        return this.#update_word_by_id.run(new_word_name, word_id);
     }
 
     // Helper functions
