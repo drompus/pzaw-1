@@ -61,6 +61,12 @@ export function getEditHandler(req, res) {
 
 export function postEditHandler(req, res) {
 
+    const is_game_active = req.session?.game_state?.is_active || false;
+
+    if (is_game_active) {
+        return res.status(403).send("Nie można edytować słów w trakcie gry!");
+    }
+
     const word_id = req.body?.word_id;
     const word_name = req.body?.word_name;
     
@@ -91,5 +97,9 @@ export function postEditHandler(req, res) {
 }
 
 export function postDeleteHandler(req, res) {
+    const word_id = req.body?.word_id;
 
+    if (!word_id || !word_manager.getWordById(word_id)) {
+        return res.status(403).send("Przesłano niepoprawne parametry żądania.")
+    }
 }
