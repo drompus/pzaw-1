@@ -1,6 +1,8 @@
 <div class="game-controls">
-    <form action="/" method="POST">
-        <button class="game-button" type="submit" name="game_action" value="restart">Zrestartuj grę</button>
-        <button class="game-button" type="submit" name="game_action" value="finish">Zakończ grę</button>
+    <form action="/game/restart" method="POST">
+        <button class="game-button" type="submit">Zrestartuj grę</button>
+    </form>
+    <form action="/game/finish" method="POST">
+        <button class="game-button" type="submit">Zakończ grę</button>
     </form>
 </div>

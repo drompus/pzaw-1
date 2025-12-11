@@ -3,8 +3,8 @@
 <div class="game-summary">
     <h1>Koniec gry!</h1>
     <p>Twój wynik: <%= score %></p>
-    <form action="/" method="POST">
-        <button type="submit" name="game_action" value="restart">Zagraj ponownie</button>
+    <form action="/game/restart" method="POST">
+        <button type="submit">Zagraj ponownie</button>
     </form>
 </div>
 

@@ -1,9 +1,9 @@
-<form action="/" method="POST" class="start-game-form">
+<form action="/game/start" method="POST" class="start-game-form">
     <label for="difficulty">Poziom trudności:</label>
     <select name="difficulty" <%= words_count === 0 ? "disabled" : "" %>>
         <option value="easy">Łatwy</option>
         <option value="medium">Średni</option>
         <option value="hard">Trudny</option>
     </select>
-    <button class="game-button" type="submit" name="game_action" value="start" <%= words_count === 0 ? "disabled" : "" %>>Zacznij grę</button>
+    <button class="game-button" type="submit" <%= words_count === 0 ? "disabled" : "" %>>Zacznij grę</button>
 </form>
