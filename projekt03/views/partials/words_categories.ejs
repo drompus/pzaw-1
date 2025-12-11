@@ -1,0 +1,14 @@
+<% categories.forEach(category=> { %>
+    <section class="word-list-category">
+        <h2>
+            <%= category.name %>
+        </h2>
+        <ul>
+            <% category.words.forEach(word=> { %>
+                <li>
+                    <%= word.name %>
+                </li>
+                <% }); %>
+        </ul>
+    </section>
+<% }); %>

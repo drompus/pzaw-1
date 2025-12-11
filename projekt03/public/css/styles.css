@@ -1,0 +1,207 @@
+html {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    background-color: rgb(80, 80, 80);
+}
+
+body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 0;
+    padding: 50px 0;
+}
+
+nav {
+    width: 60%;
+    margin-bottom: 10px;
+}
+
+nav ul {
+    display: flex;
+    column-gap: 30px;
+    justify-content: center;
+    padding: 10px;
+    background-color: rgb(60, 120, 60);
+    border-radius: 10px;
+}
+
+nav ul a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+nav ul a:hover {
+    text-decoration: underline;
+}
+
+
+main {
+    border-radius: 20px;
+    width: 60%;
+    background: linear-gradient(135deg, rgb(98, 175, 121), rgb(107, 219, 135));
+    padding: 15px;
+    box-shadow: 0 0 20px #fffc3d;
+    color: rgb(20, 40, 20);
+}
+
+main h1 {
+    font-weight: normal;
+}
+
+.welcome-text {
+    font-weight: bold;
+}
+
+.welcome-tip {
+    font-style: italic;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.word-list-category {
+    margin-left: 20px; 
+    color: #f4ff57;
+}
+
+.word-list-category h2 {
+    font-weight: 650;
+}
+
+.word-list-category ul {
+    list-style-type: square;
+    font-weight: 500;
+    color: rgb(30, 2, 95);
+}
+
+.add-word-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+}
+
+.add-word-form select, .add-word-form input {
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.add-word-form button {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 24px;
+    background-color: rgb(80, 150, 80);
+    color: white;
+    border: 1px solid yellow;
+    cursor: pointer;
+}
+
+.add-word-error-header {
+    color: rgb(214, 0, 0);
+    font-weight: bolder;
+    font-style: italic;
+}
+
+.error-text {
+    color: rgb(214, 0, 0);
+}
+
+.add-word-error-value {
+    color: black;
+}
+
+.start-game-form {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.game-button {
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+.game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.game-controls {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.game-overview {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.game-word-info {
+    font-size: 3em;
+    font-weight: bold;
+}
+
+.game-secondary-info {
+    font-size: 1.5em;
+}
+
+.game-summary {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 40px 30px;
+    max-width: 500px;
+    margin: 100px;
+    text-align: center;
+}
+
+.game-summary h1, 
+.game-summary h2 {
+    color: #333;
+    font-size: 2em;
+    margin-bottom: 15px;
+}
+
+.game-summary p {
+    color: #555;
+    font-size: 1.2em;
+    margin-bottom: 25px;
+}
+
+.game-summary button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 25px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.25s ease;
+}
+
+.game-summary button:hover {
+    background: #0056b3;
+}
+
+.game-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.game-button:hover {
+    background-color: #45a049;
+}

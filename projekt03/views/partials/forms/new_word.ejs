@@ -1,0 +1,11 @@
+<form action="/add_word" method="POST" class="add-word-form">
+    <select name="category_id">
+        <% categories.forEach(category=> { %>
+            <option value="<%= category.id %>">
+                <%= category.name %>
+            </option>
+            <% }); %>
+    </select>
+    <input type="text" name="word_name" minlength="3" maxlength="100" placeholder="np. arbuz" pattern="[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ -]+" required>
+    <button type="submit">Dodaj słowo</button>
+</form>
