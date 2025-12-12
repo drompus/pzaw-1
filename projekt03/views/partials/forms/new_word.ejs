@@ -6,6 +6,11 @@
             </option>
             <% }); %>
     </select>
-    <input type="text" name="word_name" minlength="3" maxlength="100" placeholder="np. arbuz" pattern="[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ -]+" required>
+    <input type="text" name="word_name"
+        minlength="3"
+        maxlength="100"
+        placeholder="np. arbuz"
+        pattern="[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż \-]+"
+        required>
     <button type="submit">Dodaj słowo</button>
 </form>

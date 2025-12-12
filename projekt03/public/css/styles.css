@@ -76,6 +76,41 @@ main h1 {
     color: rgb(30, 2, 95);
 }
 
+.word-row {
+    display: flex;
+    align-items: center;
+}
+
+.word-name {
+    width: 120px; 
+    margin-right: 15px;
+}
+
+.word-row-actions {
+    display: flex;
+    align-items: center; 
+    width: 140px; 
+    justify-content: space-between; 
+    flex-shrink: 0; 
+}
+
+.word-button-link {
+    text-decoration: none;
+    margin: 0;
+}
+
+.word-button {
+    width: 60px; 
+    padding: 5px 8px;
+    margin: 2px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    background-color: #f4ff57;
+    color: rgb(30, 2, 95);
+    border: 1px solid rgb(30, 2, 95);
+    cursor: pointer;
+}
+
 .add-word-form {
     display: flex;
     flex-direction: row;

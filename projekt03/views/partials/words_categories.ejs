@@ -9,11 +9,14 @@
                     <div class="word-row">
                         <span class="word-name"><%= word.name %></span>
 
-                        <a href="/word/edit/<%= word.id %>" target="_blank" class="word-button-link">
-                            <button type="button" class="word-button">Edytuj</button>
-                        </a>
+                        <div class="word-row-actions">
+                            <a href="/word/edit/<%= word.id %>" class="word-button-link">
+                                <button type="button" class="word-button">Edytuj</button>
+                            </a>
 
-                        <%- include("./forms/delete_word.ejs", { word }) %>
+                            <%- include("./forms/delete_word.ejs", { word }) %>
+
+                        </div>
                     </div>
                 </li>
                 <% }) %>

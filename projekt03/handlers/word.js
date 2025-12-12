@@ -20,9 +20,8 @@ export function postNewHandler(req, res) {
 }
 
 export function getNewHandler(req, res) {
-    const is_game_active = req.session?.game_state?.is_active || false;
 
-    if (is_game_active) {
+    if (req.is_game_active) {
         return res.render("add_word", { title: "Zgadywanka - Dodaj słowo", is_game_active: true })
     }
 
@@ -31,9 +30,8 @@ export function getNewHandler(req, res) {
 };
 
 export function getEditHandler(req, res) {
-    const is_game_active = req.session?.game_state?.is_active || false;
 
-    if (is_game_active) {
+    if (req.is_game_active) {
         return res.status(403).send("Nie można edytować słów w trakcie gry!");
     }
 
@@ -61,9 +59,7 @@ export function getEditHandler(req, res) {
 
 export function postEditHandler(req, res) {
 
-    const is_game_active = req.session?.game_state?.is_active || false;
-
-    if (is_game_active) {
+    if (req.is_game_active) {
         return res.status(403).send("Nie można edytować słów w trakcie gry!");
     }
 
@@ -98,10 +94,9 @@ export function postEditHandler(req, res) {
 
 export function postDeleteHandler(req, res) {
 
-    const is_game_active = req.session?.game_state?.is_active || false;
     const word_id = req.body?.word_id;
 
-    if (is_game_active) {
+    if (req.is_game_active) {
         return res.status(403).send("Nie można edytować słów w trakcie gry!");
     }
 
