@@ -92,14 +92,24 @@ export function postEditHandler(req, res) {
         });
     }
 
-    word_manager.updateWordName(word_id, word_name);
+    word_manager.updateWordById(word_id, word_name);
     res.redirect("/word_list");
 }
 
 export function postDeleteHandler(req, res) {
+
+    const is_game_active = req.session?.game_state?.is_active || false;
     const word_id = req.body?.word_id;
+
+    if (is_game_active) {
+        return res.status(403).send("Nie można edytować słów w trakcie gry!");
+    }
 
     if (!word_id || !word_manager.getWordById(word_id)) {
         return res.status(403).send("Przesłano niepoprawne parametry żądania.")
     }
+
+
+    word_manager.deleteWordById(word_id);
+    res.redirect("/word_list");
 }

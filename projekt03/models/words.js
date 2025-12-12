@@ -10,6 +10,7 @@ class WordsModel {
     #get_all_words_count;
     #add_word_by_category_id;
     #update_word_by_id;
+    #delete_word_by_id;
 
     init() {
         this.#get_categories = db.prepare(`SELECT id, dev_name, name FROM categories`);
@@ -24,6 +25,7 @@ class WordsModel {
         this.#get_all_words_count = db.prepare(`SELECT COUNT(*) as total FROM words`);
         this.#add_word_by_category_id = db.prepare(`INSERT INTO words (category_id, name) VALUES (?, ?)`);
         this.#update_word_by_id = db.prepare(`UPDATE words SET name = ? WHERE id = ?`);
+        this.#delete_word_by_id = db.prepare(`DELETE FROM words WHERE id = ?`);
     }
 
     // Database CRUD
@@ -57,9 +59,13 @@ class WordsModel {
         return this.#get_all_words_count.get().total;
     }
 
-    updateWordName(word_id, new_word_name) {
+    updateWordById(word_id, new_word_name) {
         const formatted_word = new_word_name.trim().toLowerCase();        
         return this.#update_word_by_id.run(new_word_name, word_id);
+    }
+
+    deleteWordById(word_id) {
+        return this.#delete_word_by_id.run(word_id);
     }
 
     // Helper functions

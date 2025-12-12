@@ -6,13 +6,15 @@
         <ul>
             <% category.words.forEach(word => { %>
                 <li>
-                    <%= word.name %>
+                    <div class="word-row">
+                        <span class="word-name"><%= word.name %></span>
 
-                        <a href="/word/edit/<%= word.id %>">
-                            <button type="button">Edytuj</button>
+                        <a href="/word/edit/<%= word.id %>" target="_blank" class="word-button-link">
+                            <button type="button" class="word-button">Edytuj</button>
                         </a>
 
                         <%- include("./forms/delete_word.ejs", { word }) %>
+                    </div>
                 </li>
                 <% }) %>
         </ul>
