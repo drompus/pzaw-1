@@ -1,0 +1,19 @@
+<%- include("partials/head.ejs") %>
+
+    <main class="edit-word-main">
+        <h1>Edytujesz słowo:
+            <b>
+                <%= word.name %>
+            </b>
+        </h1>
+
+        <p>
+            <b>Kategoria:</b>
+            <%= word.category_name %>
+        </p>
+
+        <%- include("partials/forms/edit_word.ejs", { word: word }); %>
+
+    </main>
+
+<%- include("partials/foot.ejs") %>

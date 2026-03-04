@@ -1,0 +1,18 @@
+<%- include("partials/head.ejs") %>
+
+<main>
+    <h1><b><i>Poniżej znajduje się lista wszystkich słów wg kategorii</i></b></h1>
+
+    <% if (is_game_active) { %>
+        <span>Nie można przeglądać listy w trakcie gry!<br>Zakończ grę, aby przeglądać treść</span>
+    <% } else { %>
+        <% if (categories.length > 0) { %>
+            <%- include("partials/words_categories.ejs", { categories: categories }) %>
+        <% } else { %>
+            <span>Nie istnieją jeszcze żadne kategorie!</span>
+        <% } %>
+    <% } %>
+
+</main>
+
+<%- include("partials/foot.ejs") %>

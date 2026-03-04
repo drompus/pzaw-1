@@ -1,0 +1,27 @@
+<%- include("partials/head.ejs") %>
+
+    <main class="game">
+
+        <% if (!game_state.is_active) { %>
+            <h1 class="welcome-text">Witaj w grze Zgadywanka!</h1>
+            <p class="welcome-tip">
+                Aby zacząć, wybierz poziom trudności i kliknij przycisk
+            </p>
+
+            <% if (words_count === 0) { %>
+                <h2 class="error-text">Nie można rozpocząć gry - nie dodano jeszcze żadnych słów!</h2>
+                <% } %>
+
+                    <%- include("partials/forms/start_game.ejs") %>
+
+                    <% } else { %>
+                        
+                        <%- include("partials/game_info.ejs"); %>
+                        <%- include("partials/forms/game_word_input.ejs") %>
+                        <%- include("partials/forms/game_controls.ejs") %>
+                        
+                        <% } %>
+
+    </main>
+
+    <%- include("partials/foot.ejs") %>

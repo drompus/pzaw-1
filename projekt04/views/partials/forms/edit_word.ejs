@@ -1,0 +1,12 @@
+<form action="/word/edit" method="POST" class="edit-word-form">
+    <input type="hidden" name="word_id" value="<%= word.id %>">
+    <label for="word_name">Nowa wartość:</label><br>
+
+    <input type="text" id="word_name" name="word_name"
+        value="<%= word.name %>"
+        minlength="3"
+        maxlength="100"
+        pattern="[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż \-]+"
+        required>
+    <button type="submit">Zapisz zmiany</button>
+</form>

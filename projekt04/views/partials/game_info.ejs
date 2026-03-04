@@ -1,0 +1,15 @@
+<div class="game-overview">
+    <div class="game-secondary-info">
+        <% const difficulty_map = { easy: "Łatwy" , medium: "Średni" , hard: "Trudny" }; %>
+            Poziom: <%= difficulty_map[game_state.difficulty] || "nieznany" %><br>
+            Kategoria: <b><%= game_state.current_word?.category || "..." %></b>
+    </div>
+    
+    <div class="game-word-info">
+        <%= game_state.current_word?.distorted_name || "..." %>
+    </div>
+
+    <div class="game-secondary-info">
+        Wynik: <%= game_state.score %>
+    </div>
+</div>
