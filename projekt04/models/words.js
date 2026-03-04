@@ -61,7 +61,7 @@ class WordsModel {
 
     updateWordById(word_id, new_word_name) {
         const formatted_word = new_word_name.trim().toLowerCase();        
-        return this.#update_word_by_id.run(new_word_name, word_id);
+        return this.#update_word_by_id.run(formatted_word, word_id);
     }
 
     deleteWordById(word_id) {
