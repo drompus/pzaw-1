@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Zgadywanka</title>
+</head>
+
+<body>
+
+    <header>
+        <nav class="nav">
+            <a href="">
+                <img class="nav__logo" src="icon.png">
+            </a>
+            <div class="nav__links">
+                <a class="nav__item" href="">
+                    <img class="nav__icon" src="example_icon.png">
+                    <span>Strona główna</span>
+                </a>
+                <a class="nav__item" href="">
+                    <img class="nav__icon" src="example_icon.png">
+                    <span>Strona główna</span>
+                </a>
+                <a class="nav__item" href="">
+                    <img class="nav__icon" src="example_icon.png">
+                    <span>Strona główna</span>
+                </a>
+                <a class="nav__item" href="">
+                    <img class="nav__icon" src="example_icon.png">
+                    <span>Strona główna</span>
+                </a>
+                <a class="nav__item" href="">
+                    <img class="nav__icon" src="example_icon.png">
+                    <span>Strona główna</span>
+                </a>
+            </div>
+            <div class="nav__user"></div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="card">
+            <div class="game-overview">
+                <div class="game-overview__info">
+                    <span>Poziom: Łatwy</span>
+                    <span>Kategoria: Żywność</span>
+                </div>
+                <div class="game-overview__word">powiiaa</div>
+                <div class="game-overview__score">Wynik: 0</div>
+            </div>
+            <form action="/game/guess" method="post" class="">
+                <input type="text" class="input input--primary">
+                <button class="btn btn--primary" type="submit">Sprawdź</button>
+            </form>
+            <div class="game-controls">
+                <form action="/game/restart" method="POST">
+                    <button class="btn btn--primary" type="submit">Zrestartuj grę</button>
+                </form>
+                <form action="/game/finish" method="POST">
+                    <button class="btn btn--danger" type="submit">Zakończ grę</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+
+    </footer>
+
+</body>
+
+</html>
