@@ -46,18 +46,31 @@
             <h1 class="card__title">Lista dodanych słów</h1>
             <span class="card__tip">zalogowany jako <i>siema</i></span>
 
-            <li class="word-list">
-                <ul>
-                    <!-- TO DO: add edit button and style everything in li -->
-                    <li> 
-
-                        <span class="word-list__text">Działaj teraz, póki jeszcze umiesz!</span>
-                        <form></form><button class="btn btn--danger"><img class="word-list__icon"
-                                src="example_icon.png"></button></form>
-
-                    </li>
-                </ul>
-            </li>
+            <ul class="word-list">
+                <li class="word-list__category">
+                    <h3 class="word-list__category-name">Zboża</h3>
+                    <ul>
+                        <li class="word-list__item">
+                            <span class="word-list__word-name">Działaj teraz, póki jeszcze umiesz!</span>
+                            <a href="/word/edit/" class="btn btn--alter btn--small"><img class="word-list__icon" src="example_icon.png"></a>
+                            <form action="/word/delete" method="post">
+                                <button class="btn btn--danger btn--small">
+                                    <img class="word-list__icon" src="example_icon.png">
+                                </button>
+                            </form>
+                        </li>
+                        <li class="word-list__item">
+                            <span class="word-list__word-name">Działaj teraz, póki jeszcze umiesz!</span>
+                            <a href="/word/edit/" class="btn btn--alter btn--small"><img class="word-list__icon" src="example_icon.png"></a>
+                            <form action="/word/delete" method="post">
+                                <button class="btn btn--danger btn--small">
+                                    <img class="word-list__icon" src="example_icon.png">
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </main>
 

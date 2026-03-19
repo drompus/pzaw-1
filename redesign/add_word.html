@@ -43,25 +43,22 @@
 
     <main>
         <div class="card">
-            <h1 class="card__title">Witaj w grze Zgadywanka!</h1>
-            <span class="card__tip">Aby zacząć, wybierz poziom trudności i kliknij przycisk</span>
-            <span class="alert alert--error">Nie można rozpocząć gry - nie dodano jeszcze żadnych słów!</span>
-            <form class="form form--vertical" action="/game/start" method="post">
-                <div class="hflex-container-align">
-                    <label for="difficulty">Wybierz poziom trudności: </label>
-                    <select class="select" name="difficulty" id="difficulty">
-                        <option>cos</option>
-                        <option>cos</option>
-                        <option>cos</option>
-                        <option>cos</option>
-                        <option>cos</option>
-                        <option>cos</option>
-                        <option>cos</option>
-                        <option>cos</option>
+            <h1 class="card__title">Dodawanie słowa</h1>
+
+            <form action="/word/new" method="post" class="form form--vertical">
+                <div>
+                    <label for="category_id">Wybierz kategorię:</label>
+                    <select class="select" name="category_id" id="category_id">
+                        <option>Siema</option>
+                        <option>Pomidor</option>
+                        <option>Zioła</option>
                     </select>
                 </div>
-                <button class="btn btn--primary" type="submit">Zacznij grę</button>
+                <input class="input input--primary" type="text" name="word_name" minlength="3" maxlength="100" placeholder="Wpisz słowo..."
+                    pattern="[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż \-]+" required>
+                <button class="btn btn--primary" type="submit">Dodaj słowo</button>
             </form>
+
         </div>
     </main>
 
