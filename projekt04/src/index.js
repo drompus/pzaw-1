@@ -3,7 +3,7 @@ import session from "express-session";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { SECRET } from "./config.js";
+import { SECRET } from "../config.js";
 
 import { createDBTables } from "./database/db.js";
 import { word_manager } from "./models/words.js";

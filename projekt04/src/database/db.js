@@ -1,5 +1,5 @@
 import { DatabaseSync } from "node:sqlite";
-import { DB_PATH } from "../config.js";
+import { DB_PATH } from "../../config.js";
 
 export const db = new DatabaseSync(DB_PATH);
 
