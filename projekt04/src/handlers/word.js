@@ -22,10 +22,10 @@ export function postNewHandler(req, res) {
 export function getNewHandler(req, res) {
 
     if (req.is_game_active) {
-        return res.render("add_word", { title: "Zgadywanka - Dodaj słowo", is_game_active: true })
+        return res.render("word/new", { title: "Zgadywanka - Dodaj słowo", is_game_active: true })
     }
 
-    return res.render("add_word", { title: "Zgadywanka - Dodaj słowo", categories: word_manager.getAllCategories(), is_game_active: false });
+    return res.render("word/new", { title: "Zgadywanka - Dodaj słowo", categories: word_manager.getAllCategories(), is_game_active: false });
 
 };
 
@@ -46,14 +46,15 @@ export function getEditHandler(req, res) {
         return res.status(404).send("Słowo o podanym ID nie istnieje.");
     }
 
-    return res.render("edit_word.ejs", {
+    return res.render("word/edit", {
         title: "Zgadywanka - edytuj słowo",
         word: {
             id: word?.id,
             name: word?.name,
             category_id: word?.category_id,
             category_name: word?.category_name
-        }
+        },
+        categories: word_manager.getAllCategories()
     });
 }
 

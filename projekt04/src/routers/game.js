@@ -1,6 +1,6 @@
 import express from "express";
 
-import * as game_handlers from "../../handlers/game.js";
+import * as game_handlers from "../handlers/game.js";
 
 const router = express.Router();
 

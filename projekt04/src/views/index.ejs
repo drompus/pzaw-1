@@ -1,27 +1,52 @@
 <%- include("partials/head.ejs") %>
-
-    <main class="game">
-
+    <main class="card">
         <% if (!game_state.is_active) { %>
-            <h1 class="welcome-text">Witaj w grze Zgadywanka!</h1>
-            <p class="welcome-tip">
-                Aby zacząć, wybierz poziom trudności i kliknij przycisk
-            </p>
+            <h1 class="card__title">Witaj w grze Zgadywanka!</h1>
+            <span class="card__tip">Aby zacząć, wybierz poziom trudności i kliknij przycisk</span>
 
-            <% if (words_count === 0) { %>
-                <h2 class="error-text">Nie można rozpocząć gry - nie dodano jeszcze żadnych słów!</h2>
+            <% if (words_count===0) { %>
+                <span class="alert alert--error">Nie można rozpocząć gry - nie dodano jeszcze żadnych słów!</span>
                 <% } %>
 
-                    <%- include("partials/forms/start_game.ejs") %>
-
+                    <form class="form form--vertical" action="/game/start" method="post">
+                        <div class="hflex-container hflex-container--align">
+                            <label for="difficulty">Wybierz poziom trudności: </label>
+                            <select class="select" name="difficulty" id="difficulty">
+                                <option value="easy">Łatwy</option>
+                                <option value="medium">Średni</option>
+                                <option value="hard">Trudny</option>
+                            </select>
+                        </div>
+                        <button class="btn btn--primary" type="submit">Zacznij grę</button>
+                    </form>
                     <% } else { %>
-                        
-                        <%- include("partials/game_info.ejs"); %>
-                        <%- include("partials/forms/game_word_input.ejs") %>
-                        <%- include("partials/forms/game_controls.ejs") %>
-                        
-                        <% } %>
+                        <div class="game-overview">
+                            <div class="game-overview__info">
+                                    <span>Poziom: <%= game_state.difficulty %></span>
+                                    <span>Kategoria: <%= game_state.current_word.category %></span>
+                            </div>
+                            <div class="game-overview__word">
+                                <%= game_state.current_word.distorted_name %>
+                            </div>
+                            <div class="game-overview__score">Wynik: <%= game_state.score %>
+                            </div>
+                        </div>
 
+                        <form action="/game/guess" method="post" class="">
+                            <input type="text" class="input input--primary" name="guess" placeholder="Wpisz słowo..."
+                                autofocus>
+                            <button class="btn btn--primary" type="submit">Sprawdź</button>
+                        </form>
+
+                        <div class="game-controls">
+                            <form action="/game/restart" method="post">
+                                <button class="btn btn--primary" type="submit">Zrestartuj grę</button>
+                            </form>
+                            <form action="/game/finish" method="post">
+                                <button class="btn btn--danger" type="submit">Zakończ grę</button>
+                            </form>
+                        </div>
+                        <% } %>
     </main>
 
     <%- include("partials/foot.ejs") %>

@@ -1,6 +1,6 @@
-import { word_manager } from "../src/models/words.js";
-import { distortWord } from "../src/models/word_distortion.js";
-import { getDefaultGameState } from "../src/models/game_values.js";
+import { word_manager } from "../models/words.js";
+import { distortWord } from "../models/word_distortion.js";
+import { getDefaultGameState } from "../models/game_values.js";
 
 export function startGameHandler(req, res) {
     const game_difficulty = req.body.difficulty;
@@ -51,7 +51,11 @@ export function guessGameHandler(req, res) {
         if (!new_word) {
             req.session.game_state.is_active = false;
             req.session.game_state.current_word = null;
-            res.render("game_won", { title: "Zgadywanka - Wygrałeś!" });
+            res.render("game_summary", {
+                title: "Zgadywanka - Wygrałeś!",
+                game_won: true,
+                score: req.session.game_state.score
+            });
             return;
         } else {
             req.session.game_state.current_word = {
@@ -69,6 +73,7 @@ export function finishGameHandler(req, res) {
     req.session.game_state.is_active = false;
     res.render("game_summary", {
         title: "Zgadywanka - Podsumowanie gry",
+        game_won: false,
         score: req.session.game_state.score
     });
 }

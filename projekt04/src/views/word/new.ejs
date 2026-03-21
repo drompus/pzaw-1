@@ -1,0 +1,36 @@
+<%- include("../partials/head.ejs") %>
+
+    <main class="card">
+        <h1 class="card__title">Dodawanie słowa</h1>
+
+        <% if (is_game_active) { %>
+            <span>Nie można dodawać słów w trakcie gry!<br>Zakończ grę, aby móc dodawać nowe słowa</span>
+            <% } else { %>
+                <% if (categories.length> 0) { %>
+                    <form action="/word/new" method="post" class="form form--vertical">
+                        <div>
+                            <span for="category_id" class="card__tip">Wybierz kategorię:</span>
+                            <select class="select" name="category_id" id="category_id">
+                                <% categories.forEach(category=> { %>
+                                    <option value="<%= category.id %>">
+                                        <%= category.name %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+                        <div class="hflex-container hflex-container--stretch">
+                            <input class="input input--primary" type="text" name="word_name" minlength="3"
+                                maxlength="100" placeholder="Wpisz słowo..." pattern="[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż \-]+"
+                                required>
+                            <button class="btn btn--primary btn--small" type="submit">
+                                <img src="/assets/example_icon.png" alt="Dodaj">
+                            </button>
+                        </div>
+                    </form>
+                    <% } else { %>
+                        <span>Nie istnieją jeszcze żadne kategorie!</span>
+                        <% } %>
+                            <% } %>
+    </main>
+
+    <%- include("../partials/foot.ejs") %>

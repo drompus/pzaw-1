@@ -23,12 +23,15 @@ word_manager.init();
 const port = 8000;
 const app = express();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+
 app.set("view engine", "ejs");
+app.set('views', path.join(__dirname, 'views'));
 
 
 // Middlewares - config
 app.use('/favicon.ico', express.static(path.join(__dirname, 'public', 'assets', 'favicon.ico')));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded());
 app.use(session({
     secret: SECRET,

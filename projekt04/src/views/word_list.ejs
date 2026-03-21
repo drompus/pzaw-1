@@ -1,18 +1,47 @@
 <%- include("partials/head.ejs") %>
 
-<main>
-    <h1><b><i>Poniżej znajduje się lista wszystkich słów wg kategorii</i></b></h1>
+    <main class="card">
+        <h1 class="card__title">Lista dodanych słów</h1>
+        <span class="card__tip">zalogowany jako <i>
+            </i></span>
 
-    <% if (is_game_active) { %>
-        <span>Nie można przeglądać listy w trakcie gry!<br>Zakończ grę, aby przeglądać treść</span>
-    <% } else { %>
-        <% if (categories.length > 0) { %>
-            <%- include("partials/words_categories.ejs", { categories: categories }) %>
-        <% } else { %>
-            <span>Nie istnieją jeszcze żadne kategorie!</span>
-        <% } %>
-    <% } %>
+        <% if (is_game_active) { %>
+            <span>Nie można przeglądać listy w trakcie gry!<br>Zakończ grę, aby przeglądać treść</span>
+            <% } else { %>
+                <% if (categories.length> 0) { %>
+                    <ul class="word-list">
+                        <% categories.forEach(category=> { %>
+                            <li class="word-list__category">
+                                <h3 class="word-list__category-name">
+                                    <%= category.name %>
+                                </h3>
+                                <ul>
+                                    <% category.words.forEach(word=> { %>
+                                        <li class="word-list__item">
+                                            <span class="word-list__word-name">
+                                                <%= word.name %>
+                                            </span>
+                                            <a href="/word/edit/<%= word.id %>" class="btn btn--alter btn--small">
+                                                <img class="word-list__icon" src="/assets/example_icon.png"
+                                                    alt="Edytuj">
+                                            </a>
+                                            <form action="/word/delete" method="post">
+                                                <input type="hidden" name="word_id" value="<%= word.id %>">
+                                                <button class="btn btn--danger btn--small" type="submit">
+                                                    <img class="word-list__icon" src="/assets/example_icon.png"
+                                                        alt="Usuń">
+                                                </button>
+                                            </form>
+                                        </li>
+                                        <% }) %>
+                                </ul>
+                            </li>
+                            <% }) %>
+                    </ul>
+                    <% } else { %>
+                        <span>Nie istnieją jeszcze żadne kategorie!</span>
+                        <% } %>
+                            <% } %>
+    </main>
 
-</main>
-
-<%- include("partials/foot.ejs") %>
+    <%- include("partials/foot.ejs") %>

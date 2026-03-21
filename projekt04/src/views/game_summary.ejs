@@ -1,11 +1,35 @@
 <%- include("partials/head.ejs") %>
 
-<div class="game-summary">
-    <h1>Koniec gry!</h1>
-    <p>Twój wynik: <%= score %></p>
-    <form action="/game/restart" method="POST">
-        <button type="submit">Zagraj ponownie</button>
-    </form>
-</div>
+    <main class="card">
+        <h1 class="card__title">
+            <% if (game_won) { %>
+                Wygrałeś!
+                <% } else { %>
+                    Koniec gry!
+                    <% } %>
+        </h1>
 
-<%- include("partials/foot.ejs") %>
+        <span class="card__tip">
+            <% if (game_won) { %>
+                Gratulacje, odgadłeś wszystkie słowa!
+                <% } else { %>
+                    Ukończyłeś grę z wynikiem:
+                    <% } %>
+        </span>
+
+        <span class="summary-score">
+            <%= score %>
+        </span>
+
+        <form action="/game/restart" method="post">
+            <button type="submit" class="btn btn--primary">
+                <% if (game_won) { %>
+                    Powrót do menu głównego
+                    <% } else { %>
+                        Zagraj ponownie
+                        <% } %>
+            </button>
+        </form>
+    </main>
+
+    <%- include("partials/foot.ejs") %>
