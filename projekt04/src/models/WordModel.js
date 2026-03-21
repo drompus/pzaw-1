@@ -1,6 +1,6 @@
 import { db } from "../database/db.js";
 
-class WordsModel {
+export default class WordModel {
 
     // CRUD fields
     #get_categories;
@@ -43,8 +43,7 @@ class WordsModel {
     }
 
     addWordToCategory(category_id, word_name) {
-        const formatted_word = word_name.trim().toLowerCase();
-        return this.#add_word_by_category_id.run(category_id, formatted_word);
+        return this.#add_word_by_category_id.run(category_id, word_name);
     }
 
     hasWordId(word_id) {
@@ -59,49 +58,12 @@ class WordsModel {
         return this.#get_all_words_count.get().total;
     }
 
-    updateWordById(word_id, new_word_name) {
-        const formatted_word = new_word_name.trim().toLowerCase();        
-        return this.#update_word_by_id.run(formatted_word, word_id);
+    updateWordById(word_id, new_word_name) {       
+        return this.#update_word_by_id.run(new_word_name, word_id);
     }
 
     deleteWordById(word_id) {
         return this.#delete_word_by_id.run(word_id);
-    }
-
-    // Helper functions
-
-    validateWordName(word_name) {
-        var errors = {};
-        const word_errors = [];
-
-        if (typeof word_name != "string") {
-            word_errors.push("Słowo musi być tekstem!");
-        } else {
-            word_name = word_name.trim().toLowerCase();
-
-            if (word_name === "") {
-                word_errors.push("Słowo nie może być puste!");
-            } else {
-                if (word_name.length < 3) word_errors.push("Słowo jest za krótkie! (min 3 znaki)");
-                else if (word_name.length > 100) word_errors.push("Słowo jest za długie! (max 100 znaków)");
-
-                const allowed_chars = "abcdefghijklmnopqrstuvwxyząćęłńóśźż -";
-                for (let char of word_name) {
-                    if (!allowed_chars.includes(char)) {
-                        word_errors.push("Słowo zawiera niedozwolone znaki!");
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (word_errors.length > 0) {
-            errors.word_name = word_errors;
-            errors.word_name_value = word_name;
-        }
-        errors.is_valid = word_errors.length === 0;;
-
-        return errors;
     }
 
     getRandomWord(excluded_words = []) {
@@ -120,5 +82,3 @@ class WordsModel {
         return db.prepare(query).get(...excluded_words);
     }
 }
-
-export const word_manager = new WordsModel();

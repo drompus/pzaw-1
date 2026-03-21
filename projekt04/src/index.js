@@ -6,19 +6,27 @@ import { fileURLToPath } from "node:url";
 import { SECRET } from "../config.js";
 
 import { createDBTables } from "./database/db.js";
-import { word_manager } from "./models/words.js";
-import word_router from "./routers/word.js";
-import game_router from "./routers/game.js";
-import createGameSession from "./middlewares/game_session.js";
-import setGameState from "./middlewares/game_state.js";
-import preventPostParamsError from "./middlewares/post_params_empty.js";
-import homeHandler from "./handlers/home.js";
-import wordListHandler from "./handlers/word_list.js";
+import WordModel from "./models/WordModel.js";
+import WordService from "./services/WordService.js";
+import GameService from "./services/GameService.js";
+import WordRouter from "./routers/WordRouter.js";
+import GameRouter from "./routers/GameRouter.js";
+import HomeController from "./controllers/HomeController.js";
+import createGameSession from "./middlewares/gameSession.js";
+import setGameState from "./middlewares/gameState.js";
+import preventPostParamsError from "./middlewares/postParamsEmpty.js";
+import ErrorHandler from "./middlewares/errorHandler.js";
 
+const wordModel = new WordModel();
+
+const wordService = new WordService(wordModel);
+const gameService = new GameService(wordService);
+const wordRouter = new WordRouter(wordService).getRouter();
+const gameRouter = new GameRouter(gameService).getRouter();
+const homeHandler = new HomeController(wordService).get;
 
 createDBTables();
-word_manager.init();
-
+wordModel.init();
 
 const port = 8000;
 const app = express();
@@ -44,14 +52,14 @@ app.use(preventPostParamsError); // used to prevent error when post without para
 
 
 // Middlewares - routers
-app.use("/game", game_router);
-app.use("/word", word_router);
+app.use("/game", gameRouter);
+app.use("/word", wordRouter);
 
 
 // Endpoints
 app.get("/", homeHandler);
-app.get("/word_list", wordListHandler);
-
+app.use(ErrorHandler.handleNotFound);
+app.use(ErrorHandler.handleError);
 
 // Start application
 app.listen(port, () => {

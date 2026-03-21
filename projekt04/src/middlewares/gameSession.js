@@ -1,4 +1,4 @@
-import { getDefaultGameState } from "../models/game_values.js";
+import { getDefaultGameState } from "../utils/gameValues.js";
 
 export default function createGameSession(req, res, next) {
     if (!req.session.game_state) {

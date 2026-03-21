@@ -216,6 +216,10 @@ img {
     font-weight: 800;
 }
 
+.card__title--error {
+    color: var(--color-danger);
+}
+
 .card__tip {
     color: var(--color-secondary);
     font-size: 1.7em;
