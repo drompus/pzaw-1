@@ -5,8 +5,9 @@ import { fileURLToPath } from "node:url";
 
 import { SECRET, PORT } from "../config.js";
 
-import { createDBTables } from "./database/db.js";
+import { createDBTables } from "./database/createDatabase.js";
 import WordModel from "./models/WordModel.js";
+import UserModel from "./models/UserModel.js";
 import WordService from "./services/WordService.js";
 import GameService from "./services/GameService.js";
 import WordRouter from "./routers/WordRouter.js";
@@ -18,6 +19,7 @@ import preventPostParamsError from "./middlewares/postParamsEmpty.js";
 import ErrorHandler from "./middlewares/errorHandler.js";
 
 const wordModel = new WordModel();
+const userModel = new UserModel();
 
 const wordService = new WordService(wordModel);
 const gameService = new GameService(wordService);
@@ -26,6 +28,7 @@ const gameRouter = new GameRouter(gameService).getRouter();
 const homeHandler = new HomeController(wordService).get;
 
 createDBTables();
+userModel.init();
 wordModel.init();
 
 const app = express();

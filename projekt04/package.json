@@ -5,13 +5,14 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "node --watch ./src/index.js",
-    "populate_db": "node ./src/database/populate_db.js"
+    "seed_db": "node ./src/database/seedDatabase.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "argon2": "^0.44.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "express-session": "^1.18.2"
