@@ -270,22 +270,28 @@ img {
 }
 
 .word-list {
-    align-self: flex-start;
     display: flex;
-    align-items: center;
-    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
     list-style: none;
-    gap: 12px;
+    gap: 32px;
+}
+
+.word-list__category {
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
 }
 
 .word-list__category > ul {
     display: flex;
     flex-direction: column;
     gap: 12px;
-
 }
 
 .word-list__category-name {
+    font-weight: 900;
+    color: var(--color-background);
     padding-bottom: 4px;
     border-bottom: 1px solid var(--color-border);
     margin-bottom: 4px;
@@ -302,9 +308,11 @@ img {
 }
 
 .word-list__word-name {
+    font-weight: 400;
+    max-width: min-content;
     min-width: 200px;
     font-size: 1.1em;
-    font-weight: 500;
+
 }
 
 .summary-score {
