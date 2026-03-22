@@ -22,13 +22,13 @@
                                                 <%= word.name %>
                                             </span>
                                             <a href="/word/edit/<%= word.id %>" class="btn btn--alter btn--small">
-                                                <img class="word-list__icon" src="/assets/example_icon.png"
+                                                <img class="word-list__icon" src="/assets/pencil_icon.svg"
                                                     alt="Edytuj">
                                             </a>
                                             <form action="/word/delete" method="post">
                                                 <input type="hidden" name="word_id" value="<%= word.id %>">
                                                 <button class="btn btn--danger btn--small" type="submit">
-                                                    <img class="word-list__icon" src="/assets/example_icon.png"
+                                                    <img class="word-list__icon" src="/assets/trashcan_icon.svg"
                                                         alt="Usuń">
                                                 </button>
                                             </form>

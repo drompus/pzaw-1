@@ -10,6 +10,7 @@ export default class WordModel {
     #get_all_words_count;
     #add_word_by_category_id;
     #update_word_by_id;
+    #update_word_category_by_id;
     #delete_word_by_id;
 
     init() {
@@ -25,6 +26,7 @@ export default class WordModel {
         this.#get_all_words_count = db.prepare(`SELECT COUNT(*) as total FROM words`);
         this.#add_word_by_category_id = db.prepare(`INSERT INTO words (category_id, name) VALUES (?, ?)`);
         this.#update_word_by_id = db.prepare(`UPDATE words SET name = ? WHERE id = ?`);
+        this.#update_word_category_by_id = db.prepare(`UPDATE words SET category_id = ? WHERE id = ?`);
         this.#delete_word_by_id = db.prepare(`DELETE FROM words WHERE id = ?`);
     }
 
@@ -60,6 +62,10 @@ export default class WordModel {
 
     updateWordById(word_id, new_word_name) {       
         return this.#update_word_by_id.run(new_word_name, word_id);
+    }
+
+    updateWordCategoryById(word_id, new_category_id) {
+        return this.#update_word_category_by_id.run(new_category_id, word_id);
     }
 
     deleteWordById(word_id) {

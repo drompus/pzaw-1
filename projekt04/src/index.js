@@ -3,7 +3,7 @@ import session from "express-session";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { SECRET } from "../config.js";
+import { SECRET, PORT } from "../config.js";
 
 import { createDBTables } from "./database/db.js";
 import WordModel from "./models/WordModel.js";
@@ -28,7 +28,6 @@ const homeHandler = new HomeController(wordService).get;
 createDBTables();
 wordModel.init();
 
-const port = 8000;
 const app = express();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -62,6 +61,6 @@ app.use(ErrorHandler.handleNotFound);
 app.use(ErrorHandler.handleError);
 
 // Start application
-app.listen(port, () => {
-    console.log(`Server listening on http://localhost:${port}`);
+app.listen(PORT, () => {
+    console.log(`Server listening on http://localhost:${PORT}`);
 });

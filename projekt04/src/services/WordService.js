@@ -1,3 +1,5 @@
+import BadRequestError from "../errors/BadRequestError.js";
+
 export default class WordService {
 
     #wordModel;
@@ -34,8 +36,14 @@ export default class WordService {
         return this.#wordModel.deleteWordById(wordId);
     }
 
-    updateWord(wordId, newWordName) {
+    updateWord(wordId, newWordName, newCategoryId = null) {
         const formattedWord = newWordName.trim().toLowerCase();
+
+        if (newCategoryId) {
+            if (!this.#wordModel.hasCategoryId(newCategoryId)) throw new BadRequestError("Nieprawidłowy ID kategorii.");
+            this.#wordModel.updateWordCategoryById(wordId, newCategoryId);
+        }
+
         return this.#wordModel.updateWordById(wordId, formattedWord);
     }
 

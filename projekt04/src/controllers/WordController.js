@@ -94,7 +94,7 @@ export default class WordController {
 
         const word_id = req.body?.word_id;
         const word_name = req.body?.word_name;
-
+        const word_category_id = req.body?.category_id;
 
         if (!word_id) {
             throw new BadRequestError("Nieprawidłowy ID słowa.");
@@ -112,7 +112,7 @@ export default class WordController {
             throw new BadRequestError(`Przesłano nieprawidłowe słowo (${word_name})`, word_validation_errors);
         }
 
-        this.#wordService.updateWord(word_id, word_name);
+        this.#wordService.updateWord(word_id, word_name, word_category_id);
         res.redirect("/word/list");
     }
 
