@@ -48,14 +48,14 @@ function applyHard(word) {
     return chars.join("");
 }
 
-export function distortWord(word, difficulty) {
-    if (!word) return null;
+export function distortWord(formattedWord, difficulty) {
+    if (!formattedWord) return null;
 
-    word = word.trim().toLowerCase();
+    formattedWord = formattedWord.trim().toLowerCase();
 
-    if (difficulty === "easy") return applyEasy(word);
-    if (difficulty === "medium") return applyMedium(word);
-    if (difficulty === "hard") return applyHard(word);
+    if (difficulty === "easy") return applyEasy(formattedWord);
+    if (difficulty === "medium") return applyMedium(formattedWord);
+    if (difficulty === "hard") return applyHard(formattedWord);
 
     return null; // wrong difficulty
 }

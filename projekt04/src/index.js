@@ -10,22 +10,28 @@ import WordModel from "./models/WordModel.js";
 import UserModel from "./models/UserModel.js";
 import WordService from "./services/WordService.js";
 import GameService from "./services/GameService.js";
+import AuthService from "./services/AuthService.js";
 import WordRouter from "./routers/WordRouter.js";
 import GameRouter from "./routers/GameRouter.js";
+import AuthRouter from "./routers/AuthRouter.js";
 import HomeController from "./controllers/HomeController.js";
-import createGameSession from "./middlewares/gameSession.js";
-import setGameState from "./middlewares/gameState.js";
+import setGameSession from "./middlewares/setGameSession.js";
+import setGameState from "./middlewares/setGameState.js";
 import preventPostParamsError from "./middlewares/postParamsEmpty.js";
-import ErrorHandler from "./middlewares/errorHandler.js";
+import setUser from "./middlewares/setUser.js";
+import ErrorHandler from "./middlewares/ErrorHandler.js";
 
 const wordModel = new WordModel();
 const userModel = new UserModel();
 
 const wordService = new WordService(wordModel);
 const gameService = new GameService(wordService);
+const authService = new AuthService(userModel);
 const wordRouter = new WordRouter(wordService).getRouter();
 const gameRouter = new GameRouter(gameService).getRouter();
+const authRouter = new AuthRouter(authService).getRouter();
 const homeHandler = new HomeController(wordService).get;
+
 
 createDBTables();
 userModel.init();
@@ -48,14 +54,16 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
-app.use(createGameSession);
+app.use(setGameSession);
 app.use(setGameState)
+app.use(setUser(userModel));
 app.use(preventPostParamsError); // used to prevent error when post without parameters is passed
 
 
 // Middlewares - routers
 app.use("/game", gameRouter);
 app.use("/word", wordRouter);
+app.use("/auth", authRouter);
 
 
 // Endpoints

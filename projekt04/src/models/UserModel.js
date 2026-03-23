@@ -1,5 +1,7 @@
 import { db } from "../database/createDatabase.js";
 
+const DEFAULT_ROLE = "user";
+
 export default class UserModel {
 
     // CRUD fields
@@ -8,6 +10,7 @@ export default class UserModel {
     #get_users_by_role_id;
     #add_user;
     #delete_user_by_id;
+    #get_default_role_id;
 
     init() {
         this.#get_user_by_id = db.prepare(`SELECT username, passhash, role_id FROM users WHERE id = ?`);
@@ -15,6 +18,7 @@ export default class UserModel {
         this.#get_users_by_role_id = db.prepare(`SELECT id, username FROM users WHERE role_id = ?`);
         this.#add_user = db.prepare(`INSERT INTO users (username, passhash, role_id) VALUES (?, ?, ?)`);
         this.#delete_user_by_id = db.prepare(`DELETE FROM users WHERE id = ?`);
+        this.#get_default_role_id = db.prepare(`SELECT id FROM roles WHERE name = '${DEFAULT_ROLE}'`);
     }
 
     // Database CRUD
@@ -28,6 +32,10 @@ export default class UserModel {
 
     getUsersByRoleId(roleId) {
         return this.#get_users_by_role_id.all(roleId);
+    }
+
+    getDefaultRoleId() {
+        return this.#get_default_role_id.get();
     }
 
     addUser(username, passhash, roleId) {

@@ -5,8 +5,6 @@
     font-weight: 100 900;
 }
 
-/* TO DO: Add link color if not visited */
-
 /* Variables */
 
 :root {
@@ -113,7 +111,7 @@ img {
     text-align: center;
 }
 
-.select > option:nth-child(even) {
+.select>option:nth-child(even) {
     background-color: var(--color-border);
 }
 
@@ -146,7 +144,7 @@ img {
 .hflex-container--align {
     justify-content: center;
     align-items: center;
-    
+
 }
 
 .hflex-container--stretch {
@@ -192,7 +190,11 @@ img {
 }
 
 .nav__item:hover {
-   transform: scale(var(--scale-tranform));
+    transform: scale(var(--scale-tranform));
+}
+
+.nav__item:link {
+    color: inherit;
 }
 
 .nav__item:visited {
@@ -282,7 +284,8 @@ img {
 .word-list__category {
     padding: 12px;
     border-radius: 4px;
-    border: 1px solid var(--color-border);
+    border: 4px solid var(--color-border);
+    box-shadow: 10px 10px 10px rgba(0,0,0,0.7);
 }
 
 .word-list__category > ul {
@@ -306,7 +309,7 @@ img {
     padding-bottom: 12px;
     border-bottom: 1px solid var(--color-border);
     gap: 20px;
-    
+
 }
 
 .word-list__word-name {
@@ -321,4 +324,63 @@ img {
     font-size: 3em;
     font-weight: 800;
     color: var(--color-danger);
+}
+
+/* Authentication */
+.login-box {
+    text-align: center;
+    box-shadow: 8px 8px 10px var(--color-background);
+    border: 12px solid var(--color-secondary);
+    border-radius: 4px;
+    padding: 32px;
+}
+
+.login {
+    border-top: 1px solid var(--color-border);
+    padding-top: 50px;
+    margin-top: 10px;
+}
+
+.login__fields {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    align-items: center;
+    text-decoration: underline;
+    text-underline-offset: 8px;
+    gap: 40px 32px; 
+}
+
+.login__fields > input {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    filter: saturate(50%);
+}
+
+.login__fields > input:focus {
+  outline: 5px solid var(--color-primary);
+}
+
+.login__fields > input::placeholder {
+    color: var(--color-foreground);
+    filter: brightness(75%);
+    font-size: 0.8em;
+}
+
+.login__label {
+    font-size: 1.4em !important;
+    text-align: end;
+}
+
+.login__button {
+    font-weight: 600;
+    width: 100%;
+}
+
+.login__button:hover {
+    transform: none;
+}
+
+.login__tip {
+    color: var(--color-secondary);
+    filter: brightness(75%);
 }

@@ -1,5 +1,3 @@
-import BadRequestError from "../errors/BadRequestError.js";
-
 export default class GameController {
 
     #gameService
@@ -14,9 +12,7 @@ export default class GameController {
     postStart(req, res) {
         const game_difficulty = req.body.difficulty;
 
-        if (!this.#gameService.isValidDifficulty(game_difficulty)) {
-            throw new BadRequestError("Przesłano nieprawidłowy poziom trudności gry!");
-        }
+        this.#gameService.validateDifficulty(game_difficulty);
 
         const starting_word = this.#gameService.getRandomWord();
         if (!starting_word) {

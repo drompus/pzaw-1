@@ -48,10 +48,6 @@ export default class WordModel {
         return this.#add_word_by_category_id.run(category_id, word_name);
     }
 
-    hasWordId(word_id) {
-        return this.#get_word_by_id.all(word_id).length > 0;
-    }
-
     hasCategoryId(category_id) {
         return this.#get_category_by_id.all(category_id).length > 0;
     }

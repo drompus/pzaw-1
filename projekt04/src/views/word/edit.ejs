@@ -3,7 +3,6 @@
     <main class="card">
         <h1 class="card__title">Edytowanie słowa: <%= word.name %>
         </h1>
-        <!-- TO DO: ADD CATEGORY CHANGE AND MAKE WORDS UNIQUE -->
 
         <form action="/word/edit" method="post" class="form form--vertical">
             <input type="hidden" name="word_id" value="<%= word.id %>">

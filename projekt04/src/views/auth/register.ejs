@@ -1,0 +1,15 @@
+<%- include("partials/head.ejs") %>
+
+  <main class="card">
+    <h1 class="card__title card__title--error">
+      <%= error_message %>
+    </h1>
+    <% if (errors && errors.length> 0) { %>
+      <h2>Powody: </h2>
+      <% errors.forEach(function(error) { %>
+        <p><i><b>- <%= error %></b></i></p>
+        <% }); %>
+          <% } %>
+  </main>
+
+  <%- include("partials/foot.ejs") %>

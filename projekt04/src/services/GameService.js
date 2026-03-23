@@ -1,4 +1,5 @@
-import { getDefaultGameState } from "../utils/gameValues.js";
+import BadRequestError from "../errors/BadRequestError.js";
+import { DEFAULT_GAME_STATE } from "../utils/defaultValues.js";
 import { distortWord } from "./WordDistortion.js";
 
 export default class GameService {
@@ -43,15 +44,17 @@ export default class GameService {
 
     }
 
-    isValidDifficulty(difficulty) {
-        return ["easy", "medium", "hard"].includes(difficulty);
+    validateDifficulty(difficulty) {
+        if (!["easy", "medium", "hard"].includes(difficulty)) {
+            throw new BadRequestError("Przesłano nieprawidłowy poziom trudności!");
+        }
     }
 
     buildWordState(word, difficulty) {
         return {
             name: word.name,
             category: word.category,
-            distorted_name: distortWord(word.name, difficulty)
+            distorted_name: distortWord(this.#wordService.formatWord(word.name), difficulty)
         };
     }
 
@@ -60,6 +63,6 @@ export default class GameService {
     }
 
     getDefaultState() {
-        return getDefaultGameState();
+        return { ...DEFAULT_GAME_STATE};
     }
 }

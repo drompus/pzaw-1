@@ -1,24 +1,36 @@
+import InvalidInputError from "../errors/InvalidInputError.js";
 import NotFoundError from "../errors/NotFoundError.js";
 
 export default class ErrorHandler {
 
     // eslint-disable-next-line no-unused-vars
     static handleError(error, req, res, next) {
-
+        
+        const status = error.status || 500;
+        const message = error.message || "Wystąpił błąd serwera.";
         const errorTitleMap = {
-            400: "Błąd żądania",
+            200: "Niepoprawne dane",
             401: "Brak autoryzacji",
             403: "Brak dostępu",
+            400: "Błąd żądania",
             404: "Nie znaleziono strony",
             500: "Błąd serwera"
         };
 
-        const status = error.status || 500;
-        const message = error.message || "Wystąpił błąd serwera.";
+        if (error instanceof InvalidInputError && error.view) {
+            res.status(status);
+            res.render(error.view, {
+                title: "Zgadywanka - " + (errorTitleMap[status] || "Nieznany błąd") ,
+                error_message: message,
+                errors: error.reasons || []
+            });
+            return;
+        }
+
 
         res.status(status);
         res.render("error", {
-            title: errorTitleMap[status] || "Nieznany błąd",
+            title: "Zgadywanka - " + (errorTitleMap[status] || "Nieznany błąd") ,
             error_message: message,
             errors: error.reasons || []
         });
