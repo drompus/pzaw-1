@@ -30,11 +30,22 @@
                     <img class="nav__icon" src="/assets/list_icon.svg">
                     <span>Lista słów</span>
                 </a>
-                <a class="nav__item" href="/auth/login">
-                    <img class="nav__icon" src="/assets/user_icon.svg">
-                    <span>Logowanie</span>
-                </a>
             </div>
-            <div class="nav__user"></div>
+            <div class="nav__user">
+                <% if (user){ %>
+                    <span class="nav__user-logged-text">Zalogowano jako: <span><%= user.username %></span></span>
+                    <form method="post" action="/auth/logout">
+                        <button class="nav__item" type="submit">
+                            <img class="nav__icon" src="/assets/logout_icon.svg">
+                            <span>Wyloguj</span>
+                        </button>
+                    </form>
+                        <% } else { %>
+                            <a class="nav__item" href="/auth/login">
+                                <img class="nav__icon" src="/assets/user_icon.svg">
+                                <span>Logowanie</span>
+                            </a>
+                            <% } %>
+            </div>
         </nav>
     </header>

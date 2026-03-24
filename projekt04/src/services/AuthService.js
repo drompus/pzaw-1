@@ -37,15 +37,9 @@ export default class AuthService {
             reasons.push(message);
         }
 
-        if (reasons.length > 0) {
-            return {
-                isValid: false,
-                reasons: reasons
-            }
-        } else {
-            return {
-                isValid: true
-            }
+        return {
+            isValid: reasons.length === 0,
+            reasons: reasons
         }
     }
 
@@ -99,6 +93,8 @@ export default class AuthService {
         const errors = [];
         const usernameValidation = this.#validateUsername(username);
         const passwordValidation = this.#validatePassword(password);
+        console.log(usernameValidation);
+        console.log(passwordValidation);
 
         if (!usernameValidation.isValid || !passwordValidation.isValid) {
             errors.push(...usernameValidation.reasons, ...passwordValidation.reasons);
@@ -113,6 +109,4 @@ export default class AuthService {
         const passhash = await argon2.hash(password, { secret: Buffer.from(PEPPER) });
         return this.#userModel.addAndGetUser(username, passhash, this.#userModel.getDefaultRoleId());
     }
-
-
 }

@@ -11,6 +11,7 @@ export default class AuthController {
         this.postLogin = this.postLogin.bind(this);
         this.getRegister = this.getRegister.bind(this);
         this.postRegister = this.postRegister.bind(this);
+        this.postLogout = this.postLogout.bind(this);
     }
 
     getLogin(req, res) {
@@ -66,18 +67,26 @@ export default class AuthController {
         }
 
         const errors = [];
-        
+
         if (req.session.game_state.is_active) throw new ForbiddenError("Nie można się zalogować w trakcie gry!");
         if (!req.body?.username) errors.push("Nie podano nazwy użytkownika!");
         if (!req.body?.password) errors.push("Nie podano hasła!");
         if (!req.body?.confirm_password || req.body.confirm_password !== req.body?.password) errors.push("Hasła nie są identyczne!");
-        console.log(errors);
+        let user = null;
+        try {
+            user = await this.#authService.registerUser(req.body.username, req.body.password);
+        } catch (error) {
+            if (error instanceof RegisterError && error.reasons && error.reasons.length > 0) {
+                errors.push(...error.reasons);
+            }
+        }
         if (errors.length > 0) throw new RegisterError("Wystąpił błąd rejestracji", errors);
-        const user = await this.#authService.registerUser(req.body.username, req.body.password);
         req.session.user_id = user.id; // no need to check whether user exists - error is throwed if it doesn't
-        console.log(user);
-
         res.redirect("/");
+    }
 
+    postLogout(req, res) {
+        req.session.destroy();
+        res.redirect("/");
     }
 }

@@ -17,6 +17,8 @@ export default class AuthRouter {
         
         this.#router.get("/register", this.#authController.getRegister);
         this.#router.post("/register", this.#authController.postRegister);
+
+        this.#router.post("/logout", this.#authController.postLogout);
     }
 
     getRouter() {

@@ -5,9 +5,14 @@ export default class ErrorHandler {
 
     // eslint-disable-next-line no-unused-vars
     static handleError(error, req, res, next) {
-        
+
+        if (!error.status) {
+            console.error(error);
+            error.message = "Wystąpił nieoczekiwany błąd serwera.";
+        }
+
         const status = error.status || 500;
-        const message = error.message || "Wystąpił błąd serwera.";
+        const message = error.message || "Wystąpił nieoczekiwanybłąd serwera.";
         const errorTitleMap = {
             422: "Niepoprawne dane",
             401: "Brak autoryzacji",
@@ -20,7 +25,7 @@ export default class ErrorHandler {
         if (error instanceof InvalidInputError && error.view) {
             res.status(status);
             res.render(error.view, {
-                title: "Zgadywanka - " + (errorTitleMap[status] || "Nieznany błąd") ,
+                title: "Zgadywanka - " + (errorTitleMap[status] || "Nieznany błąd"),
                 error_message: message,
                 errors: error.reasons || []
             });
@@ -30,7 +35,7 @@ export default class ErrorHandler {
 
         res.status(status);
         res.render("error", {
-            title: "Zgadywanka - " + (errorTitleMap[status] || "Nieznany błąd") ,
+            title: "Zgadywanka - " + (errorTitleMap[status] || "Nieznany błąd"),
             error_message: message,
             errors: error.reasons || []
         });
