@@ -14,6 +14,9 @@ export default class AuthRouter {
     #initRoutes() {
         this.#router.get("/login", this.#authController.getLogin);
         this.#router.post("/login", this.#authController.postLogin);
+        
+        this.#router.get("/register", this.#authController.getRegister);
+        this.#router.post("/register", this.#authController.postRegister);
     }
 
     getRouter() {

@@ -16,9 +16,9 @@ export default class UserModel {
         this.#get_user_by_id = db.prepare(`SELECT username, passhash, role_id FROM users WHERE id = ?`);
         this.#get_user_by_username = db.prepare(`SELECT id, passhash, role_id FROM users WHERE username = ?`);
         this.#get_users_by_role_id = db.prepare(`SELECT id, username FROM users WHERE role_id = ?`);
-        this.#add_user = db.prepare(`INSERT INTO users (username, passhash, role_id) VALUES (?, ?, ?)`);
+        this.#add_user = db.prepare(`INSERT INTO users (username, passhash, role_id) VALUES (?, ?, ?) RETURNING username, role_id, id`);
         this.#delete_user_by_id = db.prepare(`DELETE FROM users WHERE id = ?`);
-        this.#get_default_role_id = db.prepare(`SELECT id FROM roles WHERE name = '${DEFAULT_ROLE}'`);
+        this.#get_default_role_id = db.prepare(`SELECT id FROM roles WHERE name = ?`);
     }
 
     // Database CRUD
@@ -35,11 +35,11 @@ export default class UserModel {
     }
 
     getDefaultRoleId() {
-        return this.#get_default_role_id.get();
+        return this.#get_default_role_id.get(DEFAULT_ROLE).id;
     }
 
-    addUser(username, passhash, roleId) {
-        return this.#add_user.run(username, passhash, roleId);
+    addAndGetUser(username, passhash, roleId) {
+        return this.#add_user.get(username, passhash, roleId);
     }
 
     deleteUserById(userId) {

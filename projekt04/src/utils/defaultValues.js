@@ -18,6 +18,7 @@ export const AUTH_REQUIREMENTS = {
         length: {
             min: 5,
             max: 64
-        }
+        },
+        pattern: /^(?=.*[A-Z])(?=.*\d).{5,64}$/
     }
 }

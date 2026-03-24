@@ -7,6 +7,8 @@ import { AUTH_REQUIREMENTS } from "../utils/defaultValues.js";
 const INVALID_USERNAME_LENGTH_MESSAGE = `Nazwa użytkownika powinna zawierać od ${AUTH_REQUIREMENTS.username.length.min} do ${AUTH_REQUIREMENTS.username.length.max} znaków`;
 const INVALID_PASSWORD_LENGTH_MESSAGE = `Hasło powinno zawierać od ${AUTH_REQUIREMENTS.password.length.min} do ${AUTH_REQUIREMENTS.password.length.max} znaków`;
 const INVALID_CREDENTIALS_MESSAGE = "Niepoprawna nazwa użytkownika lub hasło";
+const LACK_OF_CAPITAL_PASSWORD_MESSAGE = "Hasło musi zawierać co najmniej jedną wielką literę";
+const LACK_OF_DIGIT_PASSWORD_MESSAGE = "Hasło musi zawierać co najmniej jedną cyfrę";
 
 export default class AuthService {
 
@@ -23,8 +25,8 @@ export default class AuthService {
 
         const invalidChars = [...new Set( // using set to avoid duplicate values
             username
-            .split('')
-            .filter(char => !AUTH_REQUIREMENTS.username.allowedChars.test(char))
+                .split('')
+                .filter(char => !AUTH_REQUIREMENTS.username.allowedChars.test(char))
         )];
 
         if (invalidChars.length > 0) {
@@ -48,16 +50,23 @@ export default class AuthService {
     }
 
     #validatePassword(password) {
+        const reasons = [];
         if (password.length < AUTH_REQUIREMENTS.password.length.min ||
             password.length > AUTH_REQUIREMENTS.password.length.max) {
-            return {
-                isValid: false,
-                reasons: [INVALID_PASSWORD_LENGTH_MESSAGE]
-            }
-        } else {
-            return {
-                isValid: true
-            }
+            reasons.push(INVALID_PASSWORD_LENGTH_MESSAGE);
+        }
+
+        if (!/[A-Z]/.test(password)) {
+            reasons.push(LACK_OF_CAPITAL_PASSWORD_MESSAGE);
+        }
+
+        if (!/\d/.test(password)) {
+            reasons.push(LACK_OF_DIGIT_PASSWORD_MESSAGE);
+        }
+        
+        return {
+            isValid: reasons.length === 0,
+            reasons: reasons
         }
     }
 
@@ -65,7 +74,7 @@ export default class AuthService {
 
         const errors = [];
 
-        if (!this.#validateUsername(username).isValid || !this.#validatePassword(password).isValid) { // basic validation
+        if (!username || !password) {
             // on login page user doesn't need to know about the requirements, so we send the same message as for nonexistent password or username
             errors.push(INVALID_CREDENTIALS_MESSAGE);
             throw new LoginError("Niepoprawne dane logowania", errors);
@@ -81,6 +90,7 @@ export default class AuthService {
             errors.push(INVALID_CREDENTIALS_MESSAGE);
             throw new LoginError("Niepoprawne dane logowania", errors);
         }
+
 
         return user;
     }
@@ -101,7 +111,7 @@ export default class AuthService {
         }
 
         const passhash = await argon2.hash(password, { secret: Buffer.from(PEPPER) });
-        this.#userModel.addUser(username, passhash, this.#userModel.getDefaultRoleId());
+        return this.#userModel.addAndGetUser(username, passhash, this.#userModel.getDefaultRoleId());
     }
 
 

@@ -1,21 +1,28 @@
 <%- include("../partials/head.ejs") %>
 
     <main class="card">
-        <div class="login-box">
+        <div class="auth-wrapper">
             <h1 class="card__title">LOGOWANIE</h1>
-            <form class="form form--vertical login" action="/auth/login" method="post">
-                <div class="login__fields">
-                    <label for="username" class="login__label">Nazwa użytkownika:</label>
-                    <input type="input" id="username" name="username" pattern="/^[a-zA-Z0-9_ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$/"
-                        minlength="3" maxlength="20" placeholder="np. janusz_32" class="input input--primary"
-                        autocomplete="username">
-                    <label for="password" class="login__label">Hasło:</label>
-                    <input type="password" id="password" name="password" minlength="5" maxlength="64"
-                        placeholder="np. haslojanusza32" class="input input--primary">
-                </div>
-                <button type="submit" class="btn btn--primary login__button">Zaloguj się</button>
-                <span class="login__tip">Nie masz jeszcze konta? <a href="auth/register">Zarejestruj się!</a></span>
+            <form class="form form--vertical auth" action="/auth/login" method="post">
+                <% if (typeof errors !='undefined' ) {%>
+                    <div class="equal-divide-container__item notice-box auth__error">
+                        <%= errors[0] %>
+                    </div>
+                    <% } %>
+                        <div class="auth__fields">
+                            <label for="username" class="auth__label">Nazwa użytkownika:</label>
+                            <input type="input" id="username" name="username" class="input input--primary"
+                                autocomplete="username" required>
+                            <label for="password" class="auth__label">Hasło:</label>
+                            <input type="password" id="password" name="password" class="input input--primary"
+                                autocomplete="current-password" required>
+                        </div>
+                        <button type="submit" class="btn btn--primary auth__button">Zaloguj się</button>
+                        <span class="auth__tip">Nie masz jeszcze konta? <a href="/auth/register">Zarejestruj
+                                się!</a></span>
             </form>
+
+        </div>
         </div>
     </main>
 

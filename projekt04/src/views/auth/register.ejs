@@ -1,15 +1,47 @@
-<%- include("partials/head.ejs") %>
+<%- include("../partials/head.ejs") %>
 
-  <main class="card">
-    <h1 class="card__title card__title--error">
-      <%= error_message %>
-    </h1>
-    <% if (errors && errors.length> 0) { %>
-      <h2>Powody: </h2>
-      <% errors.forEach(function(error) { %>
-        <p><i><b>- <%= error %></b></i></p>
-        <% }); %>
-          <% } %>
-  </main>
+    <main class="card">
+        <div class="equal-divide-container">
+            <div class="equal-divide-container__item equal-divide-container__item--right notice-box">
+                <span class="notice-box__title">Wymagania:</span>
+                <ul class="notice-box__item">
+                    <li><span class="notice-box__item-name">Nazwa użytkownika:</span>
+                        <ul class="notice-box__item-content">
+                            <li>musi zawierać od 3 do 20 znaków</li>
+                            <li>dozwolone znaki: cyfry, litery, _ , -</li>
+                        </ul>
+                    </li>
+                    <li><span class="notice-box__item-name">Hasło </span>musi zawierać:
+                        <ul class="notice-box__item-content">
+                            <li> od 5 do 64 znaków,</li>
+                            <li>przynajmniej 1 dużą literę,</li>
+                            <li>przynajmniej 1 cyfrę</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="auth-wrapper equal-divide-container__item">
+                <h1 class="card__title">REJESTRACJA</h1>
+                <form class="form form--vertical auth" action="/auth/register" method="post">
+                    <div class="auth__fields">
+                        <label for="username" class="auth__label">Nazwa użytkownika:</label>
+                        <input type="input" id="username" name="username" pattern="[a-zA-Z0-9_ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+"
+                            minlength="3" maxlength="20" placeholder="np. janusz_32" class="input input--primary"
+                            autocomplete="username" required>
+                        <label for="password" class="auth__label">Hasło:</label>
+                        <input type="password" id="password" name="password" minlength="5" maxlength="64"
+                            placeholder="np. hasloJanusza32" pattern="(?=.*[A-Z])(?=.*\d).{5,64}"
+                            class="input input--primary" autocomplete="current-password" required>
+                        <label for="confirm_password" class="auth__label">Potwierdź hasło:</label>
+                        <input type="password" id="confirm_password" name="confirm_password" class="input input--primary"
+                            autocomplete="current-password" required>
+                    </div>
+                    <button type="submit" class="btn btn--primary auth__button">Zarejestruj się</button>
+                    <span class="auth__tip">Masz już konto? <a href="/auth/login">Zaloguj się!</a></span>
+                </form>
 
-  <%- include("partials/foot.ejs") %>
+            </div>
+        </div>
+    </main>
+
+    <%- include("../partials/foot.ejs") %>

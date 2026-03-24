@@ -9,7 +9,7 @@ export default class ErrorHandler {
         const status = error.status || 500;
         const message = error.message || "Wystąpił błąd serwera.";
         const errorTitleMap = {
-            200: "Niepoprawne dane",
+            422: "Niepoprawne dane",
             401: "Brak autoryzacji",
             403: "Brak dostępu",
             400: "Błąd żądania",
@@ -37,6 +37,6 @@ export default class ErrorHandler {
     }
 
     static handleNotFound(req, res, next) {
-        next(new NotFoundError("Strona o podanym url nie istnieje"));
+        next(new NotFoundError("Błąd 404! Strona o podanym adresie URL nie istnieje."));
     }
 }
