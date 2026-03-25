@@ -1,4 +1,5 @@
 import BadRequestError from "../errors/BadRequestError.js";
+import UnauthorizedError from "../errors/UnauthorizedError.js";
 import { DEFAULT_GAME_STATE } from "../utils/defaultValues.js";
 import { distortWord } from "./WordDistortion.js";
 
@@ -10,30 +11,34 @@ export default class GameService {
     }
 
     processGuess(gameState, guess) {
-        const current_word = gameState.current_word;
+        const current = gameState.current_word;
 
-        if (guess === current_word.name) {
+        if (guess === current.name) {
             gameState.score++;
-            gameState.previous_words_names.push(current_word.name);
+            gameState.excluded_words_ids.push(current.id);
+            const newWord = this.#wordService.getRandomWord(
+                gameState.mode,
+                gameState.user_id,
+                gameState.excluded_words_ids
+            );
 
-            const new_word = this.getRandomWord(gameState.previous_words_names);
-
-            if (!new_word) {
-                gameState.is_active = false
+            if (!newWord) {
+                gameState.is_active = false;
                 gameState.current_word = null;
                 return {
                     game_won: true,
                     game_finished: true,
                     game_state: gameState
-                }
+                };
             }
 
-            gameState.current_word = this.buildWordState(new_word, gameState.difficulty);
+            gameState.current_word = this.buildWordState(newWord, gameState.difficulty);
+
             return {
                 game_won: false,
                 game_finished: false,
                 game_state: gameState
-            }
+            };
         }
 
         return {
@@ -41,28 +46,51 @@ export default class GameService {
             game_finished: false,
             game_state: gameState
         };
-
     }
 
     validateDifficulty(difficulty) {
-        if (!["easy", "medium", "hard"].includes(difficulty)) {
+        const allowedDifficulties = ["easy", "medium", "hard"];
+        if (!allowedDifficulties.includes(difficulty)) {
             throw new BadRequestError("Przesłano nieprawidłowy poziom trudności!");
         }
     }
 
+    validateMode(mode, userId) {
+        const allowedModes = ["public", "private"];
+        if (!allowedModes.includes(mode)) {
+            throw new BadRequestError("Przesłano nieprawidłowy tryb gry!");
+        }
+
+        if (mode === "private") {
+            if (!userId) {
+                throw new UnauthorizedError("Tryb prywatny wymaga zalogowania.");
+            }
+            if (this.#wordService.getPrivateWordsCount(userId) === 0) {
+                throw new BadRequestError("Nie masz żadnych prywatnych słów do gry.");
+            }
+        }
+
+        if (mode === "public") {
+            if (this.#wordService.getPublicWordsCount() === 0) {
+                throw new BadRequestError("Brak publicznych słów do gry.");
+            }
+        }
+    }
+    
     buildWordState(word, difficulty) {
         return {
+            id: word.id,
             name: word.name,
-            category: word.category,
+            category: word.category_name,
             distorted_name: distortWord(this.#wordService.formatWord(word.name), difficulty)
         };
     }
 
-    getRandomWord(excluded = []) {
-        return this.#wordService.getRandomWord(excluded);
+    getRandomWord(mode, userId, excludedIds = []) {
+        return this.#wordService.getRandomWord(mode, userId, excludedIds);
     }
 
     getDefaultState() {
-        return { ...DEFAULT_GAME_STATE};
+        return { ...DEFAULT_GAME_STATE };
     }
 }

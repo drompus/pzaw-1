@@ -5,8 +5,8 @@ export default class WordRouter {
 
     #wordController;
     #router;
-    constructor(wordService) {
-        this.#wordController = new WordController(wordService);
+    constructor(wordService, authService) {
+        this.#wordController = new WordController(wordService, authService);
         this.#router = express.Router();
         this.#initRoutes();
     }
@@ -20,7 +20,8 @@ export default class WordRouter {
 
         this.#router.post("/delete", this.#wordController.postDelete);
 
-        this.#router.get("/list", this.#wordController.getList);
+        this.#router.get("/list/private", this.#wordController.getList);
+        this.#router.get("/list/public", this.#wordController.getPublicList);
     }
 
     getRouter() {

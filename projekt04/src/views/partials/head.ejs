@@ -26,9 +26,19 @@
                     <img class="nav__icon" src="/assets/plus_icon.svg">
                     <span>Dodaj słowo</span>
                 </a>
-                <a class="nav__item" href="/word/list">
+                <a class="nav__item" href="/category/new">
+                    <img class="nav__icon" src="/assets/example_icon.png">
+                    <span>Dodaj kategorię</span>
+                </a>
+                <% if (user) { %>
+                <a class="nav__item" href="/word/list/private">
                     <img class="nav__icon" src="/assets/list_icon.svg">
-                    <span>Lista słów</span>
+                    <span>Osobista lista słów</span>
+                </a>
+                <% } %>
+                <a class="nav__item" href="/word/list/public">
+                    <img class="nav__icon" src="/assets/globe_icon.svg">
+                    <span>Globalna lista słów</span>
                 </a>
             </div>
             <div class="nav__user">

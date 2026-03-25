@@ -1,5 +1,7 @@
 import BadRequestError from "../errors/BadRequestError.js";
+import ForbiddenError from "../errors/ForbiddenError.js";
 import NotFoundError from "../errors/NotFoundError.js";
+import { AUTH_REQUIREMENTS } from "../utils/defaultValues.js";
 
 export default class WordService {
 
@@ -12,13 +14,72 @@ export default class WordService {
         return rawWord.trim().toLowerCase();
     }
 
+    formatCategory(rawCategory) {
+        return rawCategory.trim().toLowerCase();
+    }
+
     hasCategoryId(categoryId) {
         return this.#wordModel.hasCategoryId(categoryId);
+    }
+
+    getPublicCategories() {
+        return this.#wordModel.getPublicCategories();
+    }
+
+    getCategoryById(categoryId) {
+        return this.#wordModel.getCategoryById(categoryId);
     }
 
     getAllCategories() {
         return this.#wordModel.getAllCategories();
     }
+
+    addCategory(name, authorId, isPublic) {
+        const formattedWord = this.formatCategory(name);
+        const categoryNameValidation = this.validateCategoryName(formattedWord);
+        const validationErrors = categoryNameValidation?.errors;
+        if (!categoryNameValidation.is_valid || typeof authorId != 'number' || typeof isPublic !== 'boolean') {
+            throw new BadRequestError(`Przesłano nieprawidłową nazwę kategorii (${name})`, validationErrors);
+        }
+        this.#wordModel.addCategory(name, authorId, isPublic == true ? 1 : 0);
+    }
+
+    deleteCategory(categoryId, user, adminRoleId) {
+        const category = this.#wordModel.getCategoryById(categoryId);
+        if (!category) {
+            throw new BadRequestError("Taka kategoria nie istnieje.");
+        }
+
+        const isAdmin = user.role_id === adminRoleId;
+
+        if (category.is_public && !isAdmin) {
+            throw new ForbiddenError("Nie masz uprawnień do usunięcia kategorii publicznej.");
+        }
+
+        if (!category.is_public && category.author_id !== user.id) {
+            throw new ForbiddenError("Nie możesz usunąć kategorii, która nie należy do Ciebie.");
+        }
+
+        this.#wordModel.deleteCategory(categoryId);
+        return category;
+    }
+
+
+    getCategoriesForUser(authorId, isAdmin) {
+        const publicCategories = isAdmin == true ? this.#wordModel.getPublicCategories() : [];
+        return {
+            public: publicCategories,
+            private: this.#wordModel.getCategoriesByAuthorId(authorId)
+        }
+    }
+
+    getPublicWordsCount() {
+        return this.#wordModel.getPublicWordsCount();
+    }
+
+    getPrivateWordsCount(userId) {
+        return this.#wordModel.getPrivateWordsCount(userId);
+    } 
 
     getWordsCount() {
         return this.#wordModel.getWordsCount();
@@ -49,27 +110,38 @@ export default class WordService {
         return this.#wordModel.addWordToCategory(categoryId, formattedWord);
     }
 
-    deleteWord(wordId) {
-        this.getWord(wordId); // check if word exists
-        return this.#wordModel.deleteWordById(wordId);
+    deleteWord(wordId, user, adminRoleId) {
+        const word = this.getWord(wordId); // if word doesn't exists error is throwed
+        const category = this.checkWordPermissions(word, user, adminRoleId);
+
+        this.#wordModel.deleteWordById(wordId);
+
+        return category;
     }
 
-    updateWord(wordId, newWordName, newCategoryId = null) {
-        const formattedWord = this.formatWord(newWordName);
+    updateWord(wordId, newWordName, newCategoryId, user, adminRoleId) {
+        const word = this.getWord(wordId); // if word doesn't exists error is throwed
+        const category = this.checkWordPermissions(word, user, adminRoleId);
 
-        this.getWord(wordId); // check if word exists
-        const word_validation = this.validateWordName(formattedWord);
-        if (!word_validation.is_valid) {
-            throw new BadRequestError(`Przesłano nieprawidłowe słowo (${newWordName})`, word_validation.word_name);
+        const formattedWord = this.formatWord(newWordName);
+        const validation = this.validateWordName(formattedWord);
+
+        if (!validation.is_valid) {
+            throw new BadRequestError(`Przesłano nieprawidłowe słowo (${newWordName})`, validation.word_name);
         }
 
         if (newCategoryId) {
-            if (!this.#wordModel.hasCategoryId(newCategoryId)) throw new BadRequestError("Nieprawidłowy ID kategorii.");
+            if (!this.#wordModel.hasCategoryId(newCategoryId)) {
+                throw new BadRequestError("Nieprawidłowy ID kategorii.");
+            }
             this.#wordModel.updateWordCategoryById(wordId, newCategoryId);
         }
 
-        return this.#wordModel.updateWordById(wordId, formattedWord);
+        this.#wordModel.updateWordById(wordId, formattedWord);
+
+        return category; // redirect
     }
+
 
     validateWordName(formattedWordName) {
         const errors = {};
@@ -81,29 +153,70 @@ export default class WordService {
             if (formattedWordName === "") {
                 word_errors.push("Słowo nie może być puste!");
             } else {
-                if (formattedWordName.length < 3) word_errors.push("Słowo jest za krótkie! (min 3 znaki)");
-                else if (formattedWordName.length > 100) word_errors.push("Słowo jest za długie! (max 100 znaków)");
+                const minLength = AUTH_REQUIREMENTS.word_name.length.min;
+                const maxLength = AUTH_REQUIREMENTS.word_name.length.max
+                if (formattedWordName.length < minLength) word_errors.push(`Słowo jest za krótkie! (minimum ${minLength} znaki)`);
+                else if (formattedWordName.length > maxLength) word_errors.push(`Słowo jest za długie! (maksimum ${maxLength} znaków)`);
 
-                const allowed_chars = "abcdefghijklmnopqrstuvwxyząćęłńóśźż -";
-                for (let char of formattedWordName) {
-                    if (!allowed_chars.includes(char)) {
-                        word_errors.push("Słowo zawiera niedozwolone znaki!");
-                        break;
-                    }
-                }
+                if (!AUTH_REQUIREMENTS.word_name.pattern.test(formattedWordName)) word_errors.push("Słowo zawiera niedozwolone znaki!");
+
             }
         }
 
         if (word_errors.length > 0) {
             errors.word_name = word_errors;
-            errors.word_name_value = formattedWordName;
         }
         errors.is_valid = word_errors.length === 0;;
 
         return errors;
     }
 
-    getRandomWord(excludedWords = []) {
-        return this.#wordModel.getRandomWord(excludedWords);
+    validateCategoryName(formattedCategoryName) {
+        const errors = {};
+        const name_errors = [];
+
+        if (typeof formattedCategoryName != "string") {
+            name_errors.push("Nazwa kategorii musi być tekstem!");
+        } else {
+            if (formattedCategoryName === "") {
+                name_errors.push("Nazwa kategorii nie może być pusta!");
+            } else {
+                const minLength = AUTH_REQUIREMENTS.category_name.length.min;
+                const maxLength = AUTH_REQUIREMENTS.category_name.length.max
+                if (formattedCategoryName.length < minLength) name_errors.push(`Nazwa kategorii jest za krótka! (minimum ${minLength} znaki)`);
+                else if (formattedCategoryName.length > maxLength) name_errors.push(`Nazwa kategorii jest za długa! (maksimum ${maxLength} znaków)`);
+
+                if (!AUTH_REQUIREMENTS.category_name.pattern.test(formattedCategoryName)) name_errors.push("Nazwa kategorii zawiera niedozwolone znaki!");
+            }
+        }
+
+        if (name_errors.length > 0) {
+            errors.errors = name_errors;
+        }
+        errors.is_valid = name_errors.length === 0;
+        return errors;
+    }
+
+    checkWordPermissions(word, user, adminRoleId) {
+        const category = this.getCategoryById(word.category_id);
+        this.checkCategoryPermissions(category, user, adminRoleId);
+        return category;
+    }
+
+
+    checkCategoryPermissions(category, user, adminRoleId) {
+        const isAdmin = user.role_id === adminRoleId;
+
+        if (category.is_public && !isAdmin) {
+            throw new ForbiddenError("Nie masz uprawnień do modyfikowania kategorii publicznej.");
+        }
+
+        if (!category.is_public && category.author_id !== user.id) {
+            throw new ForbiddenError("Nie możesz modyfikować kategorii, która nie należy do Ciebie.");
+        }
+    }
+
+    getRandomWord(mode, userId, excludedIds = []) {
+        return this.#wordModel.getRandomWord(mode, userId, excludedIds);
     }
 }

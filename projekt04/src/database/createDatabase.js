@@ -23,7 +23,6 @@ export function createDBTables() {
                     
             CREATE TABLE IF NOT EXISTS categories (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                dev_name TEXT NOT NULL,
                 name TEXT NOT NULL,
                 author_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
                 is_public INTEGER NOT NULL CHECK (is_public IN (0, 1))

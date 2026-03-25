@@ -1,9 +1,13 @@
+export const DEFAULT_ROLE = "user";
+export const DEFAULT_ADMIN_ROLE = "admin";
+
 export const DEFAULT_GAME_STATE = {
     is_active: false,
     score: 0,
     current_word: null,
-    previous_words_names: [],
-    difficulty: null
+    excluded_words_ids: [],
+    difficulty: null,
+    mode: null // can be: public or private
 }
 
 export const AUTH_REQUIREMENTS = {
@@ -20,5 +24,20 @@ export const AUTH_REQUIREMENTS = {
             max: 64
         },
         pattern: /^(?=.*[A-Z])(?=.*\d).{5,64}$/
+    },
+    word_name: {
+        length: {
+            min: 2,
+            max: 40
+        },
+        pattern: /^[a-ząćęłńóśźż\s-]+$/i
+    },
+    
+    category_name: {
+        length: {
+            min: 2,
+            max: 100
+        },
+        pattern: /^[a-ząćęłńóśźż\s-]+$/i
     }
 }

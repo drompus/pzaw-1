@@ -1,0 +1,33 @@
+<%- include("../partials/head.ejs") %>
+
+    <main class="card">
+        <h1 class="card__title">Dodawanie kategorii</h1>
+
+        <% if (!user) { %>
+            <span>Musisz być zalogowany, aby dodawać kategorie. <a href="/auth/login">Zaloguj się</a></span>
+            <% } else if (is_game_active) { %>
+                <span>Nie można dodawać kategori w trakcie gry!<br>Zakończ grę, aby móc dodawać nowe kategorie</span>
+                <% } else { %>
+                    <form action="/category/new" method="post" class="form form--vertical">
+                        <% if (typeof is_admin !== 'undefined' && is_admin) { %>
+                            <div>
+                                <span for="is_category_public" class="card__tip">Wybierz typ nowej kategorii:</span>
+                                <select class="select" name="is_category_public" id="is_category_public">
+                                    <option value="false">Prywatna</option>
+                                    <option value="true">Publiczna</option>
+                                </select>
+                            </div>
+                            <% } %>
+                                <div class="hflex-container hflex-container--stretch">
+                                    <input class="input input--primary" type="text" name="category_name" minlength="3"
+                                        maxlength="100" placeholder="Wpisz nazwę kategorii..."
+                                        pattern="[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż \-]+" required>
+                                    <button class="btn btn--primary btn--small" type="submit">
+                                        <img src="/assets/plus_icon.svg" alt="Dodaj">
+                                    </button>
+                                </div>
+                    </form>
+                    <% } %>
+    </main>
+
+    <%- include("../partials/foot.ejs") %>

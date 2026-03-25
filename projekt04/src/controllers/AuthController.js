@@ -27,7 +27,6 @@ export default class AuthController {
     }
 
     async postLogin(req, res) {
-        console.log(req.body);
         if (req.user) {
             res.redirect("/");
             return;
@@ -39,11 +38,9 @@ export default class AuthController {
 
         if (!req.body?.username) errors.push("Nie podano nazwy użytkownika!");
         if (!req.body?.password) errors.push("Nie podano hasła!");
-        console.log(errors);
         if (errors.length > 0) throw new LoginError("Wystąpił błąd logowania", errors);
         const user = await this.#authService.authenticateUser(req.body.username, req.body.password);
         req.session.user_id = user.id; // no need to check whether user exists - error is throwed if it doesn't
-        console.log(user);
 
         res.redirect("/");
     }
@@ -81,12 +78,16 @@ export default class AuthController {
             }
         }
         if (errors.length > 0) throw new RegisterError("Wystąpił błąd rejestracji", errors);
+        if (!user) throw new RegisterError("Wystąpił błąd podczas rejestracji", ["Wystąpił błąd podczas rejestracji, spróbuj ponownie"]);
         req.session.user_id = user.id; // no need to check whether user exists - error is throwed if it doesn't
         res.redirect("/");
     }
 
     postLogout(req, res) {
-        req.session.destroy();
+        if (req.user) {
+            req.session.destroy();
+        }
+
         res.redirect("/");
     }
 }

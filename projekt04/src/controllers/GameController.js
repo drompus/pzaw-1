@@ -1,3 +1,5 @@
+import BadRequestError from "../errors/BadRequestError.js";
+
 export default class GameController {
 
     #gameService
@@ -10,20 +12,29 @@ export default class GameController {
     }
 
     postStart(req, res) {
-        const game_difficulty = req.body.difficulty;
+        const difficulty = req.body?.difficulty || "easy";
+        let mode = req.body?.mode || "public";
 
-        this.#gameService.validateDifficulty(game_difficulty);
+        if (!req.user && mode === "private") {
+            mode = "public";
+        }
 
-        const starting_word = this.#gameService.getRandomWord();
+        this.#gameService.validateDifficulty(difficulty);
+        this.#gameService.validateMode(mode, req.user?.id);
+
+        const starting_word = this.#gameService.getRandomWord(mode, req.user?.id);
         if (!starting_word) {
-            return res.render("partials/errors/game_start", { title: "Zgadywanka - brak dostępnych słów!" });
+            throw new BadRequestError("Nie udało się rozpocząć gry. Brak dostępnych słów!")
         }
 
         req.session.game_state = {
             ...this.#gameService.getDefaultState(),
             is_active: true,
-            difficulty: game_difficulty,
-            current_word: this.#gameService.buildWordState(starting_word, game_difficulty)
+            difficulty,
+            mode,
+            user_id: req.user?.id,
+            excluded_words_ids: [],
+            current_word: this.#gameService.buildWordState(starting_word, difficulty)
         };
         res.redirect("/");
     }

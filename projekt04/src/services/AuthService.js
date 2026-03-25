@@ -17,6 +17,14 @@ export default class AuthService {
         this.#userModel = userModel;
     }
 
+    getDefaultRoleId() {
+        return this.#userModel.getDefaultRoleId();
+    }
+
+    getDefaultAdminRoleId() {
+        return this.#userModel.getDefaultAdminRoleId();
+    }
+
     #validateUsername(username) {
         const reasons = [];
         if (username.length < AUTH_REQUIREMENTS.username.length.min || username.length > AUTH_REQUIREMENTS.username.length.max) {
@@ -93,8 +101,6 @@ export default class AuthService {
         const errors = [];
         const usernameValidation = this.#validateUsername(username);
         const passwordValidation = this.#validatePassword(password);
-        console.log(usernameValidation);
-        console.log(passwordValidation);
 
         if (!usernameValidation.isValid || !passwordValidation.isValid) {
             errors.push(...usernameValidation.reasons, ...passwordValidation.reasons);
@@ -109,4 +115,6 @@ export default class AuthService {
         const passhash = await argon2.hash(password, { secret: Buffer.from(PEPPER) });
         return this.#userModel.addAndGetUser(username, passhash, this.#userModel.getDefaultRoleId());
     }
+
+
 }

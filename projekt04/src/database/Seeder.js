@@ -76,7 +76,7 @@ export default class DatabaseSeeder {
                 continue;
             }
 
-            const category_id = this.#db.prepare(`INSERT INTO categories (dev_name, name, author_id, is_public) VALUES (?, ?, ?, ?) RETURNING id`).get(dev_category_name, other_data.name, author_id, other_data.is_public)?.id;
+            const category_id = this.#db.prepare(`INSERT INTO categories (name, author_id, is_public) VALUES (?, ?, ?) RETURNING id`).get(other_data.name, author_id, other_data.is_public)?.id;
 
             if (!category_id) {
                 console.log(`\tCould not create category ${dev_category_name}, skipping...`);

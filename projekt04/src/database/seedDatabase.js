@@ -22,7 +22,7 @@ const usersData = [
     }
 ];
 const wordsCategoriesData = {
-    "srodki_komunikacji": {
+    "środki_komunikacji": {
         name: "Środki komunikacji",
         author_username: "admin",
         is_public: 1,

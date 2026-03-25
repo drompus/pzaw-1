@@ -53,7 +53,7 @@ img {
     line-height: 0;
 }
 
-.btn:hover {
+.btn:not(:disabled):hover {
     filter: brightness(80%);
     transform: scale(var(--scale-tranform));
     cursor: pointer;
@@ -113,7 +113,16 @@ img {
     text-align: center;
 }
 
-.select>option:nth-child(even) {
+.select > optgroup {
+    text-align: left;
+    color: var(--color-background);
+}
+
+.select > optgroup > option {
+    color: var(--color-text);
+}
+
+.select > optgroup > option:nth-child(even) {
     background-color: var(--color-border);
 }
 

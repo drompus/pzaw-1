@@ -1,47 +1,73 @@
 <%- include("../partials/head.ejs") %>
 
     <main class="card">
-        <h1 class="card__title">Lista dodanych słów</h1>
-        <span class="card__tip">zalogowany jako <i>
-            </i></span>
+        <h1 class="card__title">
+            <% if (is_public_view) { %>
+                Globalna lista słów
+                <% } else { %>
+                    Osobista lista słów
+                    <% } %>
+        </h1>
 
         <% if (is_game_active) { %>
             <span>Nie można przeglądać listy w trakcie gry!<br>Zakończ grę, aby przeglądać treść</span>
-            <% } else { %>
-                <% if (categories.length> 0) { %>
-                    <ul class="word-list">
-                        <% categories.forEach(category=> { %>
-                            <li class="word-list__category">
-                                <h3 class="word-list__category-name">
-                                    <%= category.name %>
-                                </h3>
-                                <ul>
-                                    <% category.words.forEach(word=> { %>
-                                        <li class="word-list__item">
-                                            <span class="word-list__word-name">
-                                                <%= word.name %>
-                                            </span>
-                                            <a href="/word/edit/<%= word.id %>" class="btn btn--alter btn--small">
-                                                <img class="word-list__icon" src="/assets/pencil_icon.svg"
-                                                    alt="Edytuj">
-                                            </a>
-                                            <form action="/word/delete" method="post">
-                                                <input type="hidden" name="word_id" value="<%= word.id %>">
+            <% } else if (!user && !is_public_view) { %>
+                <span>Musisz być zalogowany, aby przeglądać swoje kategorie. <a href="/auth/login">Zaloguj
+                        się</a></span>
+                <% } else { %>
+                    <% if (typeof categories !=='undefined' && categories.length> 0) { %>
+                        <ul class="word-list">
+                            <% categories.forEach(category=> { %>
+                                <li class="word-list__category">
+                                    <div class="hflex-container hflex-container--align">
+                                        <h3 class="word-list__category-name">
+                                            <%= category.name %>
+                                        </h3>
+                                        <% if (is_admin || (!is_public_view && user)) { %>
+                                            <form action="/category/delete" method="post">
+                                                <input type="hidden" name="category_id" value="<%= category.id %>">
                                                 <button class="btn btn--danger btn--small" type="submit">
                                                     <img class="word-list__icon" src="/assets/trashcan_icon.svg"
                                                         alt="Usuń">
                                                 </button>
                                             </form>
-                                        </li>
-                                        <% }) %>
-                                </ul>
-                            </li>
-                            <% }) %>
-                    </ul>
-                    <% } else { %>
-                        <span>Nie istnieją jeszcze żadne kategorie!</span>
-                        <% } %>
-                            <% } %>
+                                            <% } %>
+                                    </div>
+                                    <ul>
+                                        <% category.words.forEach(word=> { %>
+                                            <li class="word-list__item">
+                                                <span class="word-list__word-name">
+                                                    <%= word.name %>
+                                                </span>
+                                                <% if (is_admin || (!is_public_view && user)) { %>
+                                                    <a href="/word/edit/<%= word.id %>"
+                                                        class="btn btn--alter btn--small">
+                                                        <img class="word-list__icon" src="/assets/pencil_icon.svg"
+                                                            alt="Edytuj">
+                                                    </a>
+                                                    <form action="/word/delete" method="post">
+                                                        <input type="hidden" name="word_id" value="<%= word.id %>">
+                                                        <button class="btn btn--danger btn--small" type="submit">
+                                                            <img class="word-list__icon" src="/assets/trashcan_icon.svg"
+                                                                alt="Usuń">
+                                                        </button>
+                                                    </form>
+                                                    <% } %>
+                                            </li>
+                                            <% }) %>
+                                    </ul>
+                                </li>
+                                <% }) %>
+                        </ul>
+                        <% } else { %>
+                            <% if (is_public_view) { %>
+                                <span>Nie istnieją jeszcze żadne publiczne kategorie!</span>
+                                <% } else { %>
+                                    <span>Nie istnieją jeszcze żadne kategorie! <a href="/category/new">Dodaj
+                                            kategorię!</a></span>
+                                    <% } %>
+                                        <% } %>
+                                            <% } %>
     </main>
 
     <%- include("../partials/foot.ejs") %>

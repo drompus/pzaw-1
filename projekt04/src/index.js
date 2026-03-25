@@ -14,6 +14,7 @@ import AuthService from "./services/AuthService.js";
 import WordRouter from "./routers/WordRouter.js";
 import GameRouter from "./routers/GameRouter.js";
 import AuthRouter from "./routers/AuthRouter.js";
+import CategoryRouter from "./routers/CategoryRouter.js";
 import HomeController from "./controllers/HomeController.js";
 import setGameSession from "./middlewares/setGameSession.js";
 import setGameState from "./middlewares/setGameState.js";
@@ -27,9 +28,10 @@ const userModel = new UserModel();
 const wordService = new WordService(wordModel);
 const gameService = new GameService(wordService);
 const authService = new AuthService(userModel);
-const wordRouter = new WordRouter(wordService).getRouter();
+const wordRouter = new WordRouter(wordService, authService).getRouter();
 const gameRouter = new GameRouter(gameService).getRouter();
 const authRouter = new AuthRouter(authService).getRouter();
+const categoryRouter = new CategoryRouter(wordService, authService).getRouter();
 const homeHandler = new HomeController(wordService).get;
 
 
@@ -64,6 +66,7 @@ app.use(preventPostParamsError); // used to prevent error when post without para
 app.use("/game", gameRouter);
 app.use("/word", wordRouter);
 app.use("/auth", authRouter);
+app.use("/category", categoryRouter);
 
 
 // Endpoints

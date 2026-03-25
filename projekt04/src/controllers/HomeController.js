@@ -7,6 +7,10 @@ export default class HomeController {
     }
 
     get(req, res) {
-        res.render("home", { title: "Zgadywanka - Strona główna", words_count: this.#wordService.getWordsCount() });
+        res.render("home", {
+            title: "Zgadywanka - Strona główna",
+            public_words_count: this.#wordService.getPublicWordsCount(),
+            private_words_count: req.user ? this.#wordService.getPrivateWordsCount(req.user.id) : 0
+        });
     }
 }
