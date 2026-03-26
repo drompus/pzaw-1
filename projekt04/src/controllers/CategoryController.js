@@ -31,9 +31,8 @@ export default class CategoryController {
     }
 
     postNew(req, res) {
-        if (!req.user) {
-            throw new UnauthorizedError("Nie można dodawać kategorii bez logowania.")
-        }
+        if (!req.user) throw new UnauthorizedError("Nie można dodawać kategorii bez logowania.");
+        if (req.is_game_active) throw new ForbiddenError("Nie można dodawać słów w trakcie gry!");
 
         const categoryName = req.body?.category_name;
         const authorId = req.user?.id;
@@ -57,9 +56,8 @@ export default class CategoryController {
     }
 
     postDelete(req, res) {
-        if (!req.user) {
-            throw new UnauthorizedError("Nie można wykonać tej operacji bez logowania");
-        }
+        if (!req.user) throw new UnauthorizedError("Nie można wykonać tej operacji bez logowania");
+        if (req.is_game_active) throw new ForbiddenError("Nie można dodawać kategorii w trakcie gry!");
 
         const category_id = req.body?.category_id;
         if (!category_id) {

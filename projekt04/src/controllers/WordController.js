@@ -20,13 +20,19 @@ export default class WordController {
 
     postNew(req, res) {
         if (!req.user) throw new UnauthorizedError("Musisz być zalogowany, aby dodawać słowa.");
+        if (req.is_game_active) throw new ForbiddenError("Nie można edytować słów w trakcie gry!");
 
-        const category_id = req.body.category_id;
-        const word_name = req.body.word_name;
+        const category_id = req.body?.category_id;
+        const word_name = req.body?.word_name;
 
-        this.#wordService.addWord(category_id, word_name);
+        if (!category_id || !word_name) {
+            throw new BadRequestError("Niepoprawne dane formularza.");
+        }
 
         const category = this.#wordService.getCategoryById(category_id);
+        if (!category) throw new BadRequestError("Taka kategoria nie istnieje.");
+        this.#wordService.checkCategoryPermissions(category, req.user, this.#authService.getDefaultAdminRoleId());
+        this.#wordService.addWord(category_id, word_name);
 
         return res.redirect(category.is_public ? "/word/list/public" : "/word/list/private");
     }
@@ -59,6 +65,9 @@ export default class WordController {
 
         this.#wordService.checkWordPermissions(word, req.user, this.#authService.getDefaultAdminRoleId());
 
+        const isAdmin = req.user.role_id === this.#authService.getDefaultAdminRoleId();
+        const categories = this.#wordService.getCategoriesForUser(req.user.id, isAdmin);
+
         return res.render("word/edit", {
             title: "Zgadywanka - edytuj słowo",
             word: {
@@ -67,7 +76,7 @@ export default class WordController {
                 category_id: word?.category_id,
                 category_name: word?.category_name
             },
-            categories: this.#wordService.getAllCategories()
+            categories: categories
         });
     }
 
@@ -99,7 +108,6 @@ export default class WordController {
 
         return res.render("word/list", { title: "Zgadywanka - Globalna lista słów", is_public_view: true, categories: publicCategories, is_admin: isAdmin });
 
-
     }
 
     postEdit(req, res) {
@@ -116,8 +124,6 @@ export default class WordController {
 
         return res.redirect(category.is_public ? "/word/list/public" : "/word/list/private");
     }
-
-
 
     postDelete(req, res) {
         if (!req.user) throw new UnauthorizedError("Musisz być zalogowany, aby usuwać słowa.");

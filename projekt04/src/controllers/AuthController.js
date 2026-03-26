@@ -39,10 +39,13 @@ export default class AuthController {
         if (!req.body?.username) errors.push("Nie podano nazwy użytkownika!");
         if (!req.body?.password) errors.push("Nie podano hasła!");
         if (errors.length > 0) throw new LoginError("Wystąpił błąd logowania", errors);
-        const user = await this.#authService.authenticateUser(req.body.username, req.body.password);
-        req.session.user_id = user.id; // no need to check whether user exists - error is throwed if it doesn't
+        const user = await this.#authService.authenticateUser(req.body.username, req.body.password); // no need to check whether user exists - error is thrown if it doesn't
 
-        res.redirect("/");
+        req.session.regenerate(err => {
+            if (err) throw err;
+            req.session.user_id = user.id;
+            res.redirect("/");
+        });
     }
 
     getRegister(req, res) {
@@ -65,7 +68,7 @@ export default class AuthController {
 
         const errors = [];
 
-        if (req.session.game_state.is_active) throw new ForbiddenError("Nie można się zalogować w trakcie gry!");
+        if (req.session.game_state.is_active) throw new ForbiddenError("Nie można się zarejestrować w trakcie gry!");
         if (!req.body?.username) errors.push("Nie podano nazwy użytkownika!");
         if (!req.body?.password) errors.push("Nie podano hasła!");
         if (!req.body?.confirm_password || req.body.confirm_password !== req.body?.password) errors.push("Hasła nie są identyczne!");
@@ -85,7 +88,10 @@ export default class AuthController {
 
     postLogout(req, res) {
         if (req.user) {
-            req.session.destroy();
+            req.session.destroy(() => {
+                res.redirect("/");
+            });
+            return;
         }
 
         res.redirect("/");

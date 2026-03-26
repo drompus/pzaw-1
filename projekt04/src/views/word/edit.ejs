@@ -9,11 +9,30 @@
             <div>
                 <span class="card__tip">Kategoria:</span>
                 <select class="select" name="category_id" id="category_id">
-                    <% categories.forEach(category=> { %>
-                        <option value="<%= category.id %>" <%=category.id===word.category_id ? 'selected' : '' %>>
-                            <%= category.name %>
-                        </option>
-                        <% }) %>
+
+                    <% if (categories.public.length> 0) { %>
+                        <optgroup label="Publiczne">
+                            <% categories.public.forEach(category=> { %>
+                                <option value="<%= category.id %>" <%=category.id===word.category_id ? 'selected' : ''
+                                    %>>
+                                    <%= category.name %>
+                                </option>
+                                <% }) %>
+                        </optgroup>
+                        <% } %>
+                            <% if (categories.private.length> 0) { %>
+                                <optgroup label="Prywatne">
+                                    <% categories.private.forEach(category=> { %>
+                                        <option value="<%= category.id %>" <%=category.id===word.category_id
+                                            ? 'selected' : '' %>>
+                                            <%= category.name %>
+                                        </option>
+                                        <% }) %>
+                                </optgroup>
+                                <% } %>
+
+                </select>
+
                 </select>
             </div>
             <div class="hflex-container hflex-container--stretch">

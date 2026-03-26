@@ -29,7 +29,8 @@
                                 </div>
                                 <div class="hflex-container hflex-container--align">
                                     <label for="difficulty">Wybierz poziom trudności: </label>
-                                    <select class="select" name="difficulty" id="difficulty" <% if (public_words_count===0){ %>
+                                    <select class="select" name="difficulty" id="difficulty" <% if
+                                        (public_words_count===0){ %>
                                         disabled
                                         <% } %>>
                                             <option value="easy">Łatwy</option>
@@ -46,7 +47,10 @@
                             <% } else { %>
                                 <div class="game-overview">
                                     <div class="game-overview__info">
-                                        <span>Poziom: <%= game_state.difficulty %></span>
+                                        <span>Poziom: <% const difficultyMap={ easy: "Łatwy" , medium: "Średni" ,
+                                                hard: "Trudny" }; %>
+                                                <%= difficultyMap[game_state.difficulty] || game_state.difficulty %>
+                                        </span>
                                         <span>Kategoria: <%= game_state.current_word.category %></span>
                                     </div>
                                     <div class="game-overview__word">

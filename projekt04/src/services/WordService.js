@@ -79,7 +79,7 @@ export default class WordService {
 
     getPrivateWordsCount(userId) {
         return this.#wordModel.getPrivateWordsCount(userId);
-    } 
+    }
 
     getWordsCount() {
         return this.#wordModel.getWordsCount();
@@ -120,28 +120,40 @@ export default class WordService {
     }
 
     updateWord(wordId, newWordName, newCategoryId, user, adminRoleId) {
-        const word = this.getWord(wordId); // if word doesn't exists error is throwed
-        const category = this.checkWordPermissions(word, user, adminRoleId);
+        const word = this.getWord(wordId); // if word doesn't exists - error is thrown
+        const oldCategory = this.checkWordPermissions(word, user, adminRoleId);
 
         const formattedWord = this.formatWord(newWordName);
         const validation = this.validateWordName(formattedWord);
 
         if (!validation.is_valid) {
-            throw new BadRequestError(`Przesłano nieprawidłowe słowo (${newWordName})`, validation.word_name);
+            throw new BadRequestError(
+                `Przesłano nieprawidłowe słowo (${newWordName})`, validation.word_name);
         }
 
-        if (newCategoryId) {
+        const isSameName = formattedWord === word.name;
+        const isSameCategory = Number(newCategoryId) === Number(word.category_id);
+
+        if (isSameName && isSameCategory) {
+            return oldCategory;
+        }
+
+        if (!isSameCategory) {
             if (!this.#wordModel.hasCategoryId(newCategoryId)) {
                 throw new BadRequestError("Nieprawidłowy ID kategorii.");
             }
             this.#wordModel.updateWordCategoryById(wordId, newCategoryId);
         }
 
-        this.#wordModel.updateWordById(wordId, formattedWord);
+        if (!isSameName) {
+            this.#wordModel.updateWordById(wordId, formattedWord);
+        }
 
-        return category; // redirect
+        const finalCategoryId = isSameCategory ? oldCategory.id : newCategoryId;
+        const finalCategory = this.getCategoryById(finalCategoryId);
+
+        return finalCategory;
     }
-
 
     validateWordName(formattedWordName) {
         const errors = {};
