@@ -25,6 +25,7 @@
                                         </h3>
                                         <% if (is_admin || (!is_public_view && user)) { %>
                                             <form action="/category/delete" method="post">
+                                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                                 <input type="hidden" name="category_id" value="<%= category.id %>">
                                                 <button class="btn btn--danger btn--small" type="submit">
                                                     <img class="word-list__icon" src="/assets/trashcan_icon.svg"
@@ -46,6 +47,7 @@
                                                             alt="Edytuj">
                                                     </a>
                                                     <form action="/word/delete" method="post">
+                                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                                         <input type="hidden" name="word_id" value="<%= word.id %>">
                                                         <button class="btn btn--danger btn--small" type="submit">
                                                             <img class="word-list__icon" src="/assets/trashcan_icon.svg"

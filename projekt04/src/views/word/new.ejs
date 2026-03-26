@@ -11,6 +11,7 @@
                     <% const hasCategories=categories.private.length> 0 || (is_admin && categories.public.length > 0) %>
                         <% if (hasCategories) { %>
                             <form action="/word/new" method="post" class="form form--vertical">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                 <div>
                                     <span for="category_id" class="card__tip">Wybierz kategorię:</span>
                                     <select class="select" name="category_id" id="category_id">

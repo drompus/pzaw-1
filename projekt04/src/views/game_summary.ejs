@@ -22,6 +22,7 @@
         </span>
 
         <form action="/game/restart" method="post">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <button type="submit" class="btn btn--primary">
                 <% if (game_won) { %>
                     Powrót do menu głównego

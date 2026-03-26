@@ -11,8 +11,10 @@ export default class ErrorHandler {
             error.message = "Wystąpił nieoczekiwany błąd serwera.";
         }
 
-        const status = error.status || 500;
-        const message = error.message || "Wystąpił nieoczekiwanybłąd serwera.";
+        res.locals.user = req.user || null; // we need to add this because when crsf error is thrown, locals.user from setUser middleware has not yet been set
+
+        let status = error.status || 500;
+        let message = error.message || "Wystąpił nieoczekiwany błąd serwera.";
         const errorTitleMap = {
             422: "Niepoprawne dane",
             401: "Brak autoryzacji",
@@ -32,6 +34,10 @@ export default class ErrorHandler {
             return;
         }
 
+        if (error.code === "EBADCSRFTOKEN") {
+            status = 403
+            message = "Nieprawidłowy token bezpieczeństwa. Odśwież stronę i spróbuj ponownie."
+        }
 
         res.status(status);
         res.render("error", {

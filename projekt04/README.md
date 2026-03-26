@@ -1,6 +1,6 @@
 # Zgadywanka
 
-Jest to gra słowna skupiająca się na odgadywaniu przez użytkowników zniekształconych słów. Można grać na globalnych słowach lub własnych - po zalogowaniu.
+Jest to gra słowna skupiająca się na odgadywaniu przez użytkowników zniekształconych słów. Można grać na globalnych słowach lub własnych - po zalogowaniu. Tylko administrator jest w stanie edytować globalne słowa oraz kategorie.
 
 ## Instalacja i uruchamianie:
 Po sklonowaniu repozytorium i przejściu do folderu `projekt04` należy uruchomić komendę:
@@ -12,6 +12,8 @@ Uruchamianie aplikacji:
 ```bash
 npm run dev
 ```
+
+**UWAGA**: domyślnie, baza danych jest pusta i rejestracja nie będzie działać z powodu braku ról w tabeli roles. Zaleca się użycie seedera przed testowaniem aplikacji
 
 ## Konfiguracja
 Dla ułatwienia konfiguracja znajduje się w pliku: config.js.
@@ -30,4 +32,3 @@ Przed pierwszym uruchomieniem (lub po usunięciu bazy) w celu wypełnienia bazy 
 npm run seed_db
 ```
 
-**UWAGA**: domyślnie, baza danych jest pusta i rejestracja nie będzie działać z powodu braku ról w tabeli roles

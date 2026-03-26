@@ -34,6 +34,7 @@
                     </div>
                     <% } %>
                         <form class="form form--vertical auth" action="/auth/register" method="post">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <div class="auth__fields">
                                 <label for="username" class="auth__label">Nazwa użytkownika:</label>
                                 <!-- pattern="[a-zA-Z0-9_ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+" minlength="3" maxlength="20" -->

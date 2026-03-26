@@ -9,6 +9,7 @@
                 <span>Nie można dodawać kategori w trakcie gry!<br>Zakończ grę, aby móc dodawać nowe kategorie</span>
                 <% } else { %>
                     <form action="/category/new" method="post" class="form form--vertical">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <% if (typeof is_admin !== 'undefined' && is_admin) { %>
                             <div>
                                 <span for="is_category_public" class="card__tip">Wybierz typ nowej kategorii:</span>

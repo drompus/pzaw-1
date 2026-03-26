@@ -1,5 +1,6 @@
 import express from "express";
 import session from "express-session";
+import csrf from "@dr.pogodin/csurf";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -16,6 +17,7 @@ import GameRouter from "./routers/GameRouter.js";
 import AuthRouter from "./routers/AuthRouter.js";
 import CategoryRouter from "./routers/CategoryRouter.js";
 import HomeController from "./controllers/HomeController.js";
+import setCsrfToken from "./middlewares/setCsrfToken.js";
 import setGameSession from "./middlewares/setGameSession.js";
 import setGameState from "./middlewares/setGameState.js";
 import preventPostParamsError from "./middlewares/postParamsEmpty.js";
@@ -56,6 +58,10 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
+
+app.use(csrf());
+app.use(setCsrfToken);
+
 app.use(setGameSession);
 app.use(setGameState)
 app.use(setUser(userModel));

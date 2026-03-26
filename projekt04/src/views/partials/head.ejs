@@ -45,6 +45,7 @@
                 <% if (user){ %>
                     <span class="nav__user-logged-text">Zalogowano jako: <span><%= user.username %></span></span>
                     <form method="post" action="/auth/logout">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <button class="nav__item" type="submit">
                             <img class="nav__icon" src="/assets/logout_icon.svg">
                             <span>Wyloguj</span>

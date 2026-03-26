@@ -5,6 +5,7 @@
         </h1>
 
         <form action="/word/edit" method="post" class="form form--vertical">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <input type="hidden" name="word_id" value="<%= word.id %>">
             <div>
                 <span class="card__tip">Kategoria:</span>
