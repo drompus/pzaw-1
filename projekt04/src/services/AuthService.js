@@ -1,7 +1,7 @@
 import argon2 from "argon2";
 import { PEPPER } from "../../config.js";
-import LoginError from "../errors/LoginError.js";
-import RegisterError from "../errors/RegisterError.js";
+import LoginError from "../errors/auth/LoginError.js";
+import RegisterError from "../errors/auth/RegisterError.js";
 import { AUTH_REQUIREMENTS } from "../utils/defaultValues.js";
 
 const INVALID_USERNAME_LENGTH_MESSAGE = `Nazwa użytkownika powinna zawierać od ${AUTH_REQUIREMENTS.username.length.min} do ${AUTH_REQUIREMENTS.username.length.max} znaków`;

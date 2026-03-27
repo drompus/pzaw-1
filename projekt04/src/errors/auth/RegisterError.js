@@ -1,4 +1,4 @@
-import InvalidInputError from "./InvalidInputError.js";
+import InvalidInputError from "../InvalidInputError.js";
 
 export default class RegisterError extends InvalidInputError {
 

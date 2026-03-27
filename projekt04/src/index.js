@@ -23,6 +23,7 @@ import setGameState from "./middlewares/setGameState.js";
 import preventPostParamsError from "./middlewares/postParamsEmpty.js";
 import setUser from "./middlewares/setUser.js";
 import ErrorHandler from "./middlewares/ErrorHandler.js";
+import SqliteSessionStore from "./utils/sqliteSessionStore.js";
 
 const wordModel = new WordModel();
 const userModel = new UserModel();
@@ -37,7 +38,7 @@ const categoryRouter = new CategoryRouter(wordService, authService).getRouter();
 const homeHandler = new HomeController(wordService).get;
 
 
-createDBTables();
+const db = createDBTables();
 userModel.init();
 wordModel.init();
 
@@ -56,15 +57,20 @@ app.use(express.urlencoded());
 app.use(session({
     secret: SECRET,
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: false,
+    store: new SqliteSessionStore(db),
+    cookie: {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 12 // 12 hours
+    }
 }));
 
-app.use(csrf());
-app.use(setCsrfToken);
 
 app.use(setGameSession);
 app.use(setGameState)
 app.use(setUser(userModel));
+app.use(csrf());
+app.use(setCsrfToken);
 app.use(preventPostParamsError); // used to prevent error when post without parameters is passed
 
 

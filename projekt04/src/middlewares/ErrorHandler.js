@@ -11,8 +11,6 @@ export default class ErrorHandler {
             error.message = "Wystąpił nieoczekiwany błąd serwera.";
         }
 
-        res.locals.user = req.user || null; // we need to add this because when crsf error is thrown, locals.user from setUser middleware has not yet been set
-
         let status = error.status || 500;
         let message = error.message || "Wystąpił nieoczekiwany błąd serwera.";
         const errorTitleMap = {

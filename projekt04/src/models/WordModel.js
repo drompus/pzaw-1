@@ -22,7 +22,6 @@ export default class WordModel {
 
     init() {
         this.#get_categories = db.prepare(`SELECT id, name FROM categories`);
-        this.#get_category_by_id = db.prepare(`SELECT id, name FROM categories WHERE id = ?`);
         this.#get_word_by_id = db.prepare(`
             SELECT words.id AS id, words.name AS name, words.category_id AS category_id, 
             categories.name AS category_name, categories.author_id AS author_id, categories.is_public AS is_public FROM words

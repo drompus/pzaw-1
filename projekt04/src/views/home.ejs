@@ -64,7 +64,7 @@
                                 <form action="/game/guess" method="post" class="">
                                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                     <input type="text" class="input input--primary" name="guess"
-                                        placeholder="Wpisz słowo..." autofocus>
+                                        placeholder="Wpisz słowo..." autofocus autocomplete="off">
                                     <button class="btn btn--primary" type="submit">Sprawdź</button>
                                 </form>
 

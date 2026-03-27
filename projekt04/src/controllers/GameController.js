@@ -68,15 +68,23 @@ export default class GameController {
     }
 
     postFinish(req, res) {
+        if (!req.session?.game_state) {
+            return res.redirect("/");
+        }
+
         req.session.game_state.is_active = false;
         res.render("game_summary", {
             title: "Zgadywanka - Podsumowanie gry",
             game_won: false,
-            score: req.session.game_state.score
+            score: req.session.game_state.score || 0
         });
     }
 
     postRestart(req, res) {
+        if (!req.session || !req.session?.game_state?.is_active) {
+            return res.redirect("/");
+        }
+
         req.session.game_state = this.#gameService.getDefaultState();
         res.redirect("/");
     }

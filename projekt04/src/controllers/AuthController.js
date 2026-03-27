@@ -1,6 +1,6 @@
 import ForbiddenError from "../errors/ForbiddenError.js";
-import LoginError from "../errors/LoginError.js";
-import RegisterError from "../errors/RegisterError.js";
+import LoginError from "../errors/auth/LoginError.js";
+import RegisterError from "../errors/auth/RegisterError.js";
 
 export default class AuthController {
 
@@ -82,8 +82,12 @@ export default class AuthController {
         }
         if (errors.length > 0) throw new RegisterError("Wystąpił błąd rejestracji", errors);
         if (!user) throw new RegisterError("Wystąpił błąd podczas rejestracji", ["Wystąpił błąd podczas rejestracji, spróbuj ponownie"]);
-        req.session.user_id = user.id; // no need to check whether user exists - error is throwed if it doesn't
-        res.redirect("/");
+        req.session.regenerate(err => {
+            if (err) throw err;
+            req.session.user_id = user.id; // no need to check whether user exists - error is throwed if it doesn't
+            res.redirect("/");
+        });
+
     }
 
     postLogout(req, res) {
