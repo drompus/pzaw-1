@@ -7,17 +7,17 @@ const rolesData = ["admin", "user"];
 const usersData = [
     {
         username: "admin",
-        password: "admin",
+        password: "Admin123",
         role: "admin"
     },
     {
         username: "Zdzisław",
-        password: "zdzisław123",
+        password: "Zdzisław123",
         role: "user"
     },
     {
         username: "Janusz",
-        password: "janusz123",
+        password: "Janusz123",
         role: "user"
     }
 ];

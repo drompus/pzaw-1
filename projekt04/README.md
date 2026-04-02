@@ -13,10 +13,10 @@ Uruchamianie aplikacji:
 npm run dev
 ```
 
-**UWAGA**: domyślnie, baza danych jest pusta i rejestracja nie będzie działać z powodu braku ról w tabeli roles. Zaleca się użycie seedera przed testowaniem aplikacji
+**UWAGA**: domyślnie, baza danych jest pusta i rejestracja nie będzie działać z powodu braku ról w tabeli `roles`. Zaleca się użycie seedera przed testowaniem aplikacji
 
 ## Konfiguracja
-Dla ułatwienia konfiguracja znajduje się w pliku: config.js.
+Dla ułatwienia (w warunkach testowych) konfiguracja znajduje się w pliku: config.js.
 Domyślne wartości:
 ```bash
 PORT = 8000;
@@ -24,11 +24,15 @@ SECRET = "haslo123@dev";
 PEPPER = "pepper123@dev";
 DB_PATH = "./db.sqlite";
 ```
-Możliwa jest również konfiguracja dozwolonych wartości/limitów długości znaków dla różnych funkcjonaności w pliku: utils/defaultValues.js
+Możliwa jest również konfiguracja dozwolonych wartości/limitów długości znaków dla różnych funkcjonaności w pliku: `utils/defaultValues.js`
 
 ## Seedowanie bazy danych
 Przed pierwszym uruchomieniem (lub po usunięciu bazy) w celu wypełnienia bazy danych danymi testowymi wykonaj polecenie:
 ```bash
 npm run seed_db
 ```
+W ramach wypełnienia bazy danych polecenie tworzy:
+- kilka różnych kategorii oraz wypełnia je przykładowymi słowami
+- 2 konta zwykłych użytkowników oraz 1 konto administratora
+    - administrator loguje się przy pomocy nazwy użytkownika: `admin` oraz hasła: `Admin123`
 
